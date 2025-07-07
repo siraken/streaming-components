@@ -26,6 +26,10 @@ const router = createBrowserRouter([
     element: <Clock />,
   },
   {
+    path: '/clock/:unit/:delay',
+    element: <Clock />,
+  },
+  {
     path: '/speech-recognition',
     element: <SpeechRecognition />,
   },
