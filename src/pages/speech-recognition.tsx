@@ -33,9 +33,11 @@ declare global {
   }
 }
 
-export default function SpeechRecognition() {
+export const SpeechRecognition = () => {
   const [status, setStatus] = useState('SpeechRecognition');
-  const [resultText, setResultText] = useState('Press "Start" button to start...');
+  const [resultText, setResultText] = useState(
+    'Press "Start" button to start...',
+  );
   const [fontSize, setFontSize] = useState(1);
   const [fontWeight, setFontWeight] = useState('normal');
   const [fontStyle, setFontStyle] = useState('normal');
@@ -54,7 +56,7 @@ export default function SpeechRecognition() {
     if (size === 0) {
       setFontSize(1);
     } else {
-      setFontSize(prev => prev + size);
+      setFontSize((prev) => prev + size);
     }
   };
 
@@ -62,9 +64,8 @@ export default function SpeechRecognition() {
     setTextStyle(style);
   };
 
-  const SpeechRecognitionAPI = 
-    window.speechRecognition ||
-    window.webkitSpeechRecognition;
+  const SpeechRecognitionAPI =
+    window.speechRecognition || window.webkitSpeechRecognition;
 
   const startRecognition = () => {
     if (!SpeechRecognitionAPI) {
@@ -132,7 +133,7 @@ export default function SpeechRecognition() {
         setViewHeight('');
       }
       if (e.key === 'c') {
-        setViewVisibility(prev => prev === 'hidden' ? 'visible' : 'hidden');
+        setViewVisibility((prev) => (prev === 'hidden' ? 'visible' : 'hidden'));
       }
     };
 
@@ -149,37 +150,20 @@ export default function SpeechRecognition() {
         </button>
         <div id="control__settings">
           <div>
-            <span>
-              Font size({fontSize}rem):
-            </span>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(-1)}
-            >
+            <span>Font size({fontSize}rem):</span>
+            <button type="button" onClick={() => handleFontSizeChange(-1)}>
               -1
             </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(-0.5)}
-            >
+            <button type="button" onClick={() => handleFontSizeChange(-0.5)}>
               -0.5
             </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(0)}
-            >
+            <button type="button" onClick={() => handleFontSizeChange(0)}>
               Base
             </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(0.5)}
-            >
+            <button type="button" onClick={() => handleFontSizeChange(0.5)}>
               +0.5
             </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(1)}
-            >
+            <button type="button" onClick={() => handleFontSizeChange(1)}>
               +1
             </button>
           </div>
@@ -217,9 +201,7 @@ export default function SpeechRecognition() {
             </select>
           </div>
           <div>
-            <label htmlFor="text-width">
-              Text width({textWidth}px):
-            </label>
+            <label htmlFor="text-width">Text width({textWidth}px):</label>
             <input
               id="text-width"
               type="range"
@@ -278,7 +260,7 @@ export default function SpeechRecognition() {
         style={{
           backgroundColor: bgColor,
           height: viewHeight,
-          visibility: viewVisibility as 'visible' | 'hidden'
+          visibility: viewVisibility as 'visible' | 'hidden',
         }}
       >
         <div
@@ -289,7 +271,7 @@ export default function SpeechRecognition() {
             fontSize: `${fontSize}rem`,
             fontWeight: fontWeight,
             fontStyle: fontStyle,
-            color: textColor
+            color: textColor,
           }}
         >
           {resultText}
@@ -297,4 +279,4 @@ export default function SpeechRecognition() {
       </section>
     </div>
   );
-}
+};
