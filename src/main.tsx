@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './styles/globals.css';
-// import './styles/globals.css';
+import './styles/style.scss';
 import App from './App';
 import { Clock } from './pages/clock';
 import { SpeechRecognition } from './pages/speech-recognition';
