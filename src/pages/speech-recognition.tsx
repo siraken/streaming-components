@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { tv } from 'tailwind-variants';
 
 interface SpeechRecognitionResult {
   isFinal: boolean;
@@ -32,6 +33,41 @@ declare global {
     webkitSpeechRecognition?: SpeechRecognitionAPI;
   }
 }
+
+const button = tv({
+  base: 'min-w-[50px] min-h-[30px] px-2 py-1 rounded transition-colors',
+  variants: {
+    variant: {
+      primary: 'bg-blue-500 text-white hover:bg-blue-600',
+      secondary: 'bg-gray-200 hover:bg-gray-300',
+    },
+    size: {
+      default: 'px-2 py-1',
+      large: 'px-4 py-2',
+    },
+  },
+  defaultVariants: {
+    variant: 'secondary',
+    size: 'default',
+  },
+});
+
+const select = tv({
+  base: 'min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded',
+});
+
+const textDisplay = tv({
+  base: 'text-base transition-[font-size] duration-100 ease-out sticky bottom-0',
+  variants: {
+    style: {
+      default: 'text-white',
+      bubble: 'relative bg-gray-50 p-5 text-left text-gray-800 rounded-2xl after:content-[""] after:border-transparent after:border-t-[10px] after:border-b-[10px] after:border-l-[30px] after:border-r-[30px] after:border-r-gray-50 after:w-0 after:h-0 after:absolute after:-mt-[10px] after:right-full after:top-1/2 after:pointer-events-none',
+    },
+  },
+  defaultVariants: {
+    style: 'default',
+  },
+});
 
 export const SpeechRecognition = () => {
   const [status, setStatus] = useState('SpeechRecognition');
@@ -148,7 +184,7 @@ export const SpeechRecognition = () => {
         <button 
           type="button" 
           onClick={handleStart}
-          className="min-w-[50px] min-h-[30px] px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className={button({ variant: 'primary', size: 'large' })}
         >
           Start
         </button>
@@ -158,35 +194,35 @@ export const SpeechRecognition = () => {
             <button 
               type="button" 
               onClick={() => handleFontSizeChange(-1)}
-              className="min-w-[50px] min-h-[30px] mx-1 px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              className={button({ className: 'mx-1' })}
             >
               -1
             </button>
             <button 
               type="button" 
               onClick={() => handleFontSizeChange(-0.5)}
-              className="min-w-[50px] min-h-[30px] mx-1 px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              className={button({ className: 'mx-1' })}
             >
               -0.5
             </button>
             <button 
               type="button" 
               onClick={() => handleFontSizeChange(0)}
-              className="min-w-[50px] min-h-[30px] mx-1 px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              className={button({ className: 'mx-1' })}
             >
               Base
             </button>
             <button 
               type="button" 
               onClick={() => handleFontSizeChange(0.5)}
-              className="min-w-[50px] min-h-[30px] mx-1 px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              className={button({ className: 'mx-1' })}
             >
               +0.5
             </button>
             <button 
               type="button" 
               onClick={() => handleFontSizeChange(1)}
-              className="min-w-[50px] min-h-[30px] mx-1 px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+              className={button({ className: 'mx-1' })}
             >
               +1
             </button>
@@ -197,7 +233,7 @@ export const SpeechRecognition = () => {
               id="font-weight"
               value={fontWeight}
               onChange={(e) => setFontWeight(e.target.value)}
-              className="min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded"
+              className={select()}
             >
               <option value="normal">Default</option>
               <option value="bold">Bold</option>
@@ -209,7 +245,7 @@ export const SpeechRecognition = () => {
               id="font-style"
               value={fontStyle}
               onChange={(e) => setFontStyle(e.target.value)}
-              className="min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded"
+              className={select()}
             >
               <option value="normal">Default</option>
               <option value="italic">Italic</option>
@@ -221,7 +257,7 @@ export const SpeechRecognition = () => {
               id="text-style"
               value={textStyle}
               onChange={(e) => handleTextStyleChange(e.target.value)}
-              className="min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded"
+              className={select()}
             >
               <option value="default">Default</option>
               <option value="bubble">Bubble</option>
@@ -265,7 +301,7 @@ export const SpeechRecognition = () => {
               id="language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded"
+              className={select()}
             >
               <option value="id-ID">Bahasa Indonesia</option>
               <option value="en-US">English (US)</option>
@@ -295,11 +331,7 @@ export const SpeechRecognition = () => {
         }}
       >
         <div
-          className={`text-base transition-[font-size] duration-100 ease-out sticky bottom-0 ${
-            textStyle === 'bubble' 
-              ? 'relative bg-gray-50 p-5 text-left text-gray-800 rounded-2xl after:content-[""] after:border-transparent after:border-t-[10px] after:border-b-[10px] after:border-l-[30px] after:border-r-[30px] after:border-r-gray-50 after:w-0 after:h-0 after:absolute after:-mt-[10px] after:right-full after:top-1/2 after:pointer-events-none'
-              : 'text-white'
-          }`}
+          className={textDisplay({ style: textStyle === 'bubble' ? 'bubble' : 'default' })}
           style={{
             width: `${textWidth}px`,
             fontSize: `${fontSize}rem`,
