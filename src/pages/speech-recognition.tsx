@@ -1,4 +1,37 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  [index: number]: {
+    transcript: string;
+  };
+}
+
+interface SpeechRecognitionEvent {
+  results: SpeechRecognitionResult[];
+  resultIndex: number;
+}
+
+interface SpeechRecognitionAPI {
+  new (): {
+    lang: string;
+    interimResults: boolean;
+    continuous: boolean;
+    onsoundstart: ((event: Event) => void) | null;
+    onnomatch: ((event: Event) => void) | null;
+    onerror: ((event: Event) => void) | null;
+    onsoundend: ((event: Event) => void) | null;
+    onresult: ((event: SpeechRecognitionEvent) => void) | null;
+    start: () => void;
+  };
+}
+
+declare global {
+  interface Window {
+    speechRecognition?: SpeechRecognitionAPI;
+    webkitSpeechRecognition?: SpeechRecognitionAPI;
+  }
+}
 
 export default function SpeechRecognition() {
   const [status, setStatus] = useState('SpeechRecognition');
@@ -30,8 +63,8 @@ export default function SpeechRecognition() {
   };
 
   const SpeechRecognitionAPI = 
-    (window as any).speechRecognition ||
-    (window as any).webkitSpeechRecognition;
+    window.speechRecognition ||
+    window.webkitSpeechRecognition;
 
   const startRecognition = () => {
     if (!SpeechRecognitionAPI) {
@@ -52,7 +85,7 @@ export default function SpeechRecognition() {
       setStatus('Try again');
     };
 
-    recognition.onerror = (e: any) => {
+    recognition.onerror = (e: Event) => {
       console.error(e);
       setStatus('Error!! Retrying...');
       if (!speechFlagRef.current) {
@@ -65,7 +98,7 @@ export default function SpeechRecognition() {
       startRecognition();
     };
 
-    recognition.onresult = (e: any) => {
+    recognition.onresult = (e: SpeechRecognitionEvent) => {
       const results = e.results;
       for (let i = e.resultIndex; i < results.length; i++) {
         if (results[i].isFinal) {
@@ -116,9 +149,9 @@ export default function SpeechRecognition() {
         </button>
         <div id="control__settings">
           <div>
-            <label>
+            <span>
               Font size({fontSize}rem):
-            </label>
+            </span>
             <button
               type="button"
               onClick={() => handleFontSizeChange(-1)}
@@ -151,8 +184,9 @@ export default function SpeechRecognition() {
             </button>
           </div>
           <div>
-            <label>Font weight:</label>
+            <label htmlFor="font-weight">Font weight:</label>
             <select
+              id="font-weight"
               value={fontWeight}
               onChange={(e) => setFontWeight(e.target.value)}
             >
@@ -161,8 +195,9 @@ export default function SpeechRecognition() {
             </select>
           </div>
           <div>
-            <label>Font style:</label>
+            <label htmlFor="font-style">Font style:</label>
             <select
+              id="font-style"
               value={fontStyle}
               onChange={(e) => setFontStyle(e.target.value)}
             >
@@ -171,8 +206,9 @@ export default function SpeechRecognition() {
             </select>
           </div>
           <div>
-            <label>Text style:</label>
+            <label htmlFor="text-style">Text style:</label>
             <select
+              id="text-style"
               value={textStyle}
               onChange={(e) => handleTextStyleChange(e.target.value)}
             >
@@ -181,10 +217,11 @@ export default function SpeechRecognition() {
             </select>
           </div>
           <div>
-            <label>
+            <label htmlFor="text-width">
               Text width({textWidth}px):
             </label>
             <input
+              id="text-width"
               type="range"
               min="0"
               max="1920"
@@ -193,24 +230,27 @@ export default function SpeechRecognition() {
             />
           </div>
           <div>
-            <label>Text color:</label>
+            <label htmlFor="text-color">Text color:</label>
             <input
+              id="text-color"
               type="color"
               value={textColor}
               onChange={(e) => setTextColor(e.target.value)}
             />
           </div>
           <div>
-            <label>Background color:</label>
+            <label htmlFor="bg-color">Background color:</label>
             <input
+              id="bg-color"
               type="color"
               value={bgColor}
               onChange={(e) => setBgColor(e.target.value)}
             />
           </div>
           <div>
-            <label>Language:</label>
+            <label htmlFor="language">Language:</label>
             <select
+              id="language"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
             >
