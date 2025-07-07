@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import './styles/globals.css';
 // import './styles/globals.css';
-import App from './App.tsx';
-import { Clock } from './pages/clock.tsx';
-// import { Counter } from './pages/counter.tsx';
+import App from './App';
+import { Clock } from './pages/clock';
+import { SpeechRecognition } from './pages/speech-recognition';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/clock',
     element: <Clock />,
+  },
+  {
+    path: '/speech-recognition',
+    element: <SpeechRecognition />,
   },
 ]);
 
