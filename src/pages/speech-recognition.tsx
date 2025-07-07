@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { tv } from 'tailwind-variants';
+import { Chrome } from '@uiw/react-color';
 
 interface SpeechRecognitionResult {
   isFinal: boolean;
@@ -61,7 +62,8 @@ const textDisplay = tv({
   variants: {
     style: {
       default: 'text-white',
-      bubble: 'relative bg-gray-50 p-5 text-left text-gray-800 rounded-2xl after:content-[""] after:border-transparent after:border-t-[10px] after:border-b-[10px] after:border-l-[30px] after:border-r-[30px] after:border-r-gray-50 after:w-0 after:h-0 after:absolute after:-mt-[10px] after:right-full after:top-1/2 after:pointer-events-none',
+      bubble:
+        'relative bg-gray-50 p-5 text-left text-gray-800 rounded-2xl after:content-[""] after:border-transparent after:border-t-[10px] after:border-b-[10px] after:border-l-[30px] after:border-r-[30px] after:border-r-gray-50 after:w-0 after:h-0 after:absolute after:-mt-[10px] after:right-full after:top-1/2 after:pointer-events-none',
     },
   },
   defaultVariants: {
@@ -81,6 +83,8 @@ export const SpeechRecognition = () => {
   const [textWidth, setTextWidth] = useState(250);
   const [textColor, setTextColor] = useState('#ffffff');
   const [bgColor, setBgColor] = useState('#008000');
+  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
+  const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [language, setLanguage] = useState('ja-JP');
   const [viewHeight, setViewHeight] = useState('');
   const [viewVisibility, setViewVisibility] = useState('visible');
@@ -181,8 +185,8 @@ export const SpeechRecognition = () => {
     <div className="font-sans text-base h-screen p-0 m-0">
       <section className="mx-4 my-0 h-[50vh] overflow-y-auto">
         <h1 className="text-xl font-bold mb-4">{status}</h1>
-        <button 
-          type="button" 
+        <button
+          type="button"
           onClick={handleStart}
           className={button({ variant: 'primary', size: 'large' })}
         >
@@ -190,37 +194,39 @@ export const SpeechRecognition = () => {
         </button>
         <div className="mt-4">
           <div className="mb-2">
-            <span className="inline-block min-w-[180px]">Font size({fontSize}rem):</span>
-            <button 
-              type="button" 
+            <span className="inline-block min-w-[180px]">
+              Font size({fontSize}rem):
+            </span>
+            <button
+              type="button"
               onClick={() => handleFontSizeChange(-1)}
               className={button({ className: 'mx-1' })}
             >
               -1
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => handleFontSizeChange(-0.5)}
               className={button({ className: 'mx-1' })}
             >
               -0.5
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => handleFontSizeChange(0)}
               className={button({ className: 'mx-1' })}
             >
               Base
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => handleFontSizeChange(0.5)}
               className={button({ className: 'mx-1' })}
             >
               +0.5
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => handleFontSizeChange(1)}
               className={button({ className: 'mx-1' })}
             >
@@ -228,7 +234,9 @@ export const SpeechRecognition = () => {
             </button>
           </div>
           <div className="mb-2">
-            <label htmlFor="font-weight" className="inline-block min-w-[180px]">Font weight:</label>
+            <label htmlFor="font-weight" className="inline-block min-w-[180px]">
+              Font weight:
+            </label>
             <select
               id="font-weight"
               value={fontWeight}
@@ -240,7 +248,9 @@ export const SpeechRecognition = () => {
             </select>
           </div>
           <div className="mb-2">
-            <label htmlFor="font-style" className="inline-block min-w-[180px]">Font style:</label>
+            <label htmlFor="font-style" className="inline-block min-w-[180px]">
+              Font style:
+            </label>
             <select
               id="font-style"
               value={fontStyle}
@@ -252,7 +262,9 @@ export const SpeechRecognition = () => {
             </select>
           </div>
           <div className="mb-2">
-            <label htmlFor="text-style" className="inline-block min-w-[180px]">Text style:</label>
+            <label htmlFor="text-style" className="inline-block min-w-[180px]">
+              Text style:
+            </label>
             <select
               id="text-style"
               value={textStyle}
@@ -264,7 +276,9 @@ export const SpeechRecognition = () => {
             </select>
           </div>
           <div className="mb-2">
-            <label htmlFor="text-width" className="inline-block min-w-[180px]">Text width({textWidth}px):</label>
+            <label htmlFor="text-width" className="inline-block min-w-[180px]">
+              Text width({textWidth}px):
+            </label>
             <input
               id="text-width"
               type="range"
@@ -277,26 +291,88 @@ export const SpeechRecognition = () => {
           </div>
           <div className="mb-2">
             <label htmlFor="text-color" className="inline-block min-w-[180px]">Text color:</label>
-            <input
-              id="text-color"
-              type="color"
-              value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              className="min-w-[50px] min-h-[30px]"
-            />
+            <div className="relative inline-block">
+              <button
+                id="text-color"
+                type="button"
+                onClick={() => setShowTextColorPicker(!showTextColorPicker)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setShowTextColorPicker(!showTextColorPicker);
+                  }
+                }}
+                className="min-w-[50px] min-h-[30px] border border-gray-300 rounded cursor-pointer"
+                style={{ backgroundColor: textColor }}
+                aria-label="テキストカラーピッカーを開く"
+              />
+              {showTextColorPicker && (
+                <div className="absolute z-10 mt-2">
+                  <div
+                    className="fixed inset-0"
+                    onClick={() => setShowTextColorPicker(false)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') {
+                        setShowTextColorPicker(false);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="カラーピッカーを閉じる"
+                  />
+                  <Chrome
+                    color={textColor}
+                    onChange={(color: { hex: string }) => setTextColor(color.hex)}
+                  />
+                </div>
+              )}
+            </div>
           </div>
           <div className="mb-2">
-            <label htmlFor="bg-color" className="inline-block min-w-[180px]">Background color:</label>
-            <input
-              id="bg-color"
-              type="color"
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-              className="min-w-[50px] min-h-[30px]"
-            />
+            <label htmlFor="bg-color" className="inline-block min-w-[180px]">
+              Background color:
+            </label>
+            <div className="relative inline-block">
+              <button
+                id="bg-color"
+                type="button"
+                onClick={() => setShowBgColorPicker(!showBgColorPicker)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setShowBgColorPicker(!showBgColorPicker);
+                  }
+                }}
+                className="min-w-[50px] min-h-[30px] border border-gray-300 rounded cursor-pointer"
+                style={{ backgroundColor: bgColor }}
+                aria-label="背景カラーピッカーを開く"
+              />
+              {showBgColorPicker && (
+                <div className="absolute z-10 mt-2">
+                  <div
+                    className="fixed inset-0"
+                    onClick={() => setShowBgColorPicker(false)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') {
+                        setShowBgColorPicker(false);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label="カラーピッカーを閉じる"
+                  />
+                  <Chrome
+                    color={bgColor}
+                    onChange={(color: { hex: string }) => setBgColor(color.hex)}
+                  />
+                </div>
+              )}
+            </div>
           </div>
           <div className="mb-2">
-            <label htmlFor="language" className="inline-block min-w-[180px]">Language:</label>
+            <label htmlFor="language" className="inline-block min-w-[180px]">
+              Language:
+            </label>
             <select
               id="language"
               value={language}
@@ -331,7 +407,9 @@ export const SpeechRecognition = () => {
         }}
       >
         <div
-          className={textDisplay({ style: textStyle === 'bubble' ? 'bubble' : 'default' })}
+          className={textDisplay({
+            style: textStyle === 'bubble' ? 'bubble' : 'default',
+          })}
           style={{
             width: `${textWidth}px`,
             fontSize: `${fontSize}rem`,
