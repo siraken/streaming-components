@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import './styles/globals.css';
 import { App } from './App';
 import { Clock } from './pages/clock';
+import { Counter } from './pages/counter';
 import { SpeechRecognition } from './pages/speech-recognition';
 
 const rootElement = document.getElementById('root');
@@ -16,10 +17,10 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
   },
-  // {
-  //   path: '/counter',
-  //   element: <Counter />,
-  // },
+  {
+    path: '/counter',
+    element: <Counter />,
+  },
   {
     path: '/clock',
     element: <Clock />,

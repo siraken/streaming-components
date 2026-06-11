@@ -8,17 +8,19 @@ A collection of standalone full-screen browser pages designed to be used as **OB
 
 ## Commands
 
-This project uses **Bun** (see `bun.lock`).
+This project uses **pnpm** (see `pnpm-lock.yaml`); the version is pinned via the `packageManager` field in `package.json`.
 
 ```bash
-bun install        # install dependencies
-bun run dev        # start the Vite dev server (HTTPS — see below)
-bun run build      # tsc -b (project references) then vite build
-bun run lint       # ESLint
-bun run preview    # preview the production build
+pnpm install       # install dependencies
+pnpm dev           # start the Vite dev server (HTTPS — see below)
+pnpm build         # tsc -b (project references) then vite build
+pnpm lint          # ESLint
+pnpm preview       # preview the production build
 ```
 
-There is no test setup. Both ESLint (`eslint.config.js`, wired to `bun run lint`) and Biome (`biome.jsonc`) are configured, but Biome has no npm script — invoke it directly with `bunx biome check` / `bunx biome format`. Biome enforces single quotes and space indentation.
+There is no test setup. Both ESLint (`eslint.config.js`, wired to `pnpm lint`) and Biome (`biome.jsonc`) are configured, but Biome has no package script — invoke it directly with `pnpm exec biome check` / `pnpm exec biome format`. Biome enforces single quotes and space indentation.
+
+pnpm blocks postinstall scripts by default, so the native deps `esbuild` and `@parcel/watcher` are pre-approved in `pnpm-workspace.yaml` under `allowBuilds`. On a fresh clone, `pnpm install` builds them automatically; if pnpm ever reports ignored builds, run `pnpm approve-builds`. Note that `pnpm <script>` verifies dependencies before running, so unapproved native builds will block `pnpm build`.
 
 ## HTTPS dev server is mandatory
 
@@ -40,5 +42,4 @@ mkcert localhost
 
 ## Known gotchas
 
-- **`src/pages/counter.tsx` is dead/broken code.** It imports `semantic-ui-react`, which is **not** a dependency and is not installed. Its route is commented out in `main.tsx`. Don't re-enable the route or import this page without first adding the missing dependency (or rewriting it to match the Tailwind-based pages) — otherwise the build breaks.
-- TypeScript uses project references (`tsc -b`): `tsconfig.app.json` covers `src`, `tsconfig.node.json` covers the Vite/config files. Strict mode plus `noUnusedLocals`/`noUnusedParameters` are on, so dead bindings fail the build.
+- TypeScript uses project references (`tsc -b`): `tsconfig.app.json` covers `src`, `tsconfig.node.json` covers the Vite/config files. Strict mode plus `noUnusedLocals`/`noUnusedParameters` are on, so dead bindings fail the build. Because the whole `src` tree is type-checked, a broken or unused page still fails `pnpm build` even if its route isn't registered in `main.tsx`.
