@@ -1,5 +1,3 @@
-import { Link } from 'react-router';
-
 export const App = () => {
   const actions: {
     name: string;
@@ -7,15 +5,15 @@ export const App = () => {
   }[] = [
     {
       name: 'Clock',
-      url: '/clock',
+      url: '/clock/',
     },
     {
       name: 'Counter',
-      url: '/counter',
+      url: '/counter/',
     },
     {
       name: 'Speech Recognition',
-      url: '/speech-recognition',
+      url: '/speech-recognition/',
     },
   ];
   return (
@@ -25,13 +23,13 @@ export const App = () => {
           <h1 className="text-2xl font-bold">Casting Components</h1>
           <div className="flex gap-4">
             {actions.map((action) => (
-              <Link
-                to={action.url}
+              <a
+                href={action.url}
                 key={action.name}
                 className="text-blue-500 hover:underline"
               >
                 {action.name}
-              </Link>
+              </a>
             ))}
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
 import { tv } from 'tailwind-variants';
 import { RootLayout } from '../ui/layouts/root';
 
@@ -84,9 +83,9 @@ const Counter = () => {
           >
             <MinusIcon /> Count Down
           </button>
-          <Link to="/" className={button()}>
+          <a href="/" className={button()}>
             <HomeIcon /> Home
-          </Link>
+          </a>
         </div>
       </div>
     </RootLayout>
