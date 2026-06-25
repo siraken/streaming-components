@@ -324,12 +324,12 @@ export const SpeechRecognition = () => {
             >
               <option value="id-ID">Bahasa Indonesia</option>
               <option value="en-US">English (US)</option>
-              <option value="es-ES">Español</option>
+              <option value="es-ES">Espa&#241;ol</option>
               <option value="de-DE">Deutsch</option>
               <option value="fil-PH">Filipino</option>
-              <option value="fr-FR">Français</option>
+              <option value="fr-FR">Fran&#231;ais</option>
               <option value="it-IT">Italiano</option>
-              <option value="nb-NO">Norsk bokmål</option>
+              <option value="nb-NO">Norsk bokm&#229;l</option>
               <option value="ru-RU">Pусский</option>
               <option value="uk-UA">Українська</option>
               <option value="ko-KR">한국어</option>

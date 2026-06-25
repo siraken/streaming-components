@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import { SpeechRecognition } from '../components/speech-recognition';
+import '../styles/globals.css';
+---
+
+<Layout title="Speech Recognition">
+  <SpeechRecognition client:only="react" />
+</Layout>

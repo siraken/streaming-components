@@ -1,0 +1,29 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import '../styles/globals.css';
+
+const tools = [
+  { name: 'Clock', url: '/clock/' },
+  { name: 'Counter', url: '/counter/' },
+  { name: 'Speech Recognition', url: '/speech-recognition/' },
+];
+---
+
+<Layout title="Streaming Components">
+  <div>
+    <div class="container">
+      <div class="grid">
+        <h1 class="text-2xl font-bold">Casting Components</h1>
+        <div class="flex gap-4">
+          {tools.map((tool) => (
+            <a href={tool.url} class="text-blue-500 hover:underline">
+              {tool.name}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

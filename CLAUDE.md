@@ -12,34 +12,29 @@ This project uses **pnpm** (see `pnpm-lock.yaml`); the version is pinned via the
 
 ```bash
 pnpm install       # install dependencies
-pnpm dev           # start the Vite dev server (HTTPS — see below)
-pnpm build         # tsc -b (project references) then vite build
-pnpm lint          # ESLint
-pnpm preview       # preview the production build
+pnpm dev           # start the Astro dev server
+pnpm build         # astro check (type-check) then astro build
+pnpm lint          # Biome check (linting + formatting)
+pnpm preview       # preview the production build locally
+pnpm deploy        # build and deploy to Cloudflare Workers
 ```
 
-There is no test setup. Both ESLint (`eslint.config.js`, wired to `pnpm lint`) and Biome (`biome.jsonc`) are configured, but Biome has no package script — invoke it directly with `pnpm exec biome check` / `pnpm exec biome format`. Biome enforces single quotes and space indentation.
+There is no test setup. Biome (`biome.jsonc`, wired to `pnpm lint`) enforces single quotes and space indentation. ESLint is not configured.
 
-pnpm blocks postinstall scripts by default, so the native deps `esbuild` and `@parcel/watcher` are pre-approved in `pnpm-workspace.yaml` under `allowBuilds`. On a fresh clone, `pnpm install` builds them automatically; if pnpm ever reports ignored builds, run `pnpm approve-builds`. Note that `pnpm <script>` verifies dependencies before running, so unapproved native builds will block `pnpm build`.
-
-## HTTPS dev server is mandatory
-
-`vite.config.ts` serves over HTTPS using `localhost.pem` / `localhost-key.pem` (gitignored). The Web Speech API requires a secure context, so the dev server will fail to start without these certs. Generate them with [mkcert](https://github.com/FiloSottile/mkcert):
-
-```bash
-mkcert -install
-mkcert localhost
-```
+pnpm blocks postinstall scripts by default, so native deps are pre-approved in `pnpm-workspace.yaml` under `allowBuilds`. On a fresh clone, `pnpm install` builds them automatically; if pnpm ever reports ignored builds, run `pnpm approve-builds`.
 
 ## Architecture
 
-- **Each overlay is its own HTML entry (Vite multi-page build) — there is no client-side router.** The HTML files `index.html` (→ `/`), `clock/index.html` (→ `/clock/`), `counter/index.html` (→ `/counter/`), and `speech-recognition/index.html` (→ `/speech-recognition/`) each load a thin entry under `src/entries/` that mounts one page component via the shared `src/entries/mount.tsx` helper. All entries are declared in `build.rollupOptions.input` in `vite.config.ts`. **URLs require a trailing slash** (`/clock/`, not `/clock`) — `appType: 'mpa'` means no SPA fallback, so `/clock` 404s in `build`/`preview`. To add a page: create the component under `src/pages/`, add `src/entries/<name>.tsx`, create `<name>/index.html`, and register it in `rollupOptions.input`. `src/App.tsx` (the `/` page) lists the overlays with plain `<a href>` links (full page loads, since each is a separate document). The clock's optional offset is read from the query string — `/clock/?unit=min&delay=5` (`unit` ∈ `hour`|`min`|`sec`) — not path params.
-- **Pages are self-contained, full-viewport components.** The flagship `/speech-recognition` page is the true OBS overlay: a chroma-key green background (default `#008000`) with layout/visibility (`viewHeight` / `viewVisibility`) held in local state and driven by keyboard shortcuts. `clock` and `counter` are simpler text pages (no green background) that wrap their content in `src/ui/layouts/root.tsx` (`RootLayout`), a pass-through wrapper; `speech-recognition` renders its own root `div` instead.
-- **Styling**: Tailwind CSS v4 via the `@tailwindcss/vite` plugin (no `tailwind.config.js`; the single entry is `@import "tailwindcss"` in `src/styles/globals.css`). Component-level variants use `tailwind-variants` (`tv(...)`) — see the `button`/`select`/`textDisplay` definitions in `speech-recognition.tsx` for the established pattern.
-- **Font customization via env vars**: `clock.tsx` reads `VITE_CLOCK_FONT` / `VITE_CLOCK_WEIGHT`; `counter.tsx` reads `VITE_COUNTER_FONT` / `VITE_COUNTER_WEIGHT` (`import.meta.env.*`). Set these in a `.env` to theme the overlays without code changes.
+- **Astro with file-based routing.** Each overlay is an `.astro` page under `src/pages/` that renders a React component with `client:only="react"` (no SSR — browser APIs only). Pages: `index.astro` (→ `/`), `clock.astro` (→ `/clock/`), `counter.astro` (→ `/counter/`), `speech-recognition.astro` (→ `/speech-recognition/`). All pages are prerendered at build time. **URLs use trailing slashes** (`trailingSlash: 'always'` in `astro.config.ts`). To add a page: create a React component in `src/components/`, then create an `.astro` page in `src/pages/` that imports and renders it with `client:only="react"`.
+- **Deployment target: Cloudflare Workers** via `@astrojs/cloudflare` adapter (`output: 'server'` in `astro.config.ts`). The adapter auto-generates `dist/server/wrangler.json` at build time. Root `wrangler.jsonc` provides base config (project name, compatibility date). Deploy with `pnpm deploy` or via Cloudflare git integration.
+- **React components live in `src/components/`.** Each is a self-contained, full-viewport component. The flagship `speech-recognition.tsx` has a chroma-key green background (default `#008000`) with layout/visibility driven by keyboard shortcuts. `clock.tsx` and `counter.tsx` are simpler text overlays.
+- **Shared Astro layout**: `src/layouts/Base.astro` provides the HTML shell (head, body) for all pages.
+- **Styling**: Tailwind CSS v4 via the `@tailwindcss/vite` plugin (no `tailwind.config.js`; `@import "tailwindcss"` in `src/styles/globals.css`). Component-level variants use `tailwind-variants` (`tv(...)`) — see the `button`/`select`/`textDisplay` definitions in `speech-recognition.tsx` for the established pattern.
+- **Font customization via env vars**: `clock.tsx` reads `PUBLIC_CLOCK_FONT` / `PUBLIC_CLOCK_WEIGHT`; `counter.tsx` reads `PUBLIC_COUNTER_FONT` / `PUBLIC_COUNTER_WEIGHT` (`import.meta.env.*`). Set these in a `.env` to theme the overlays without code changes.
 - **Keyboard controls** (overlay pages): `F` = fullscreen, `Esc` = exit fullscreen, `C` = toggle the caption view's visibility. Implemented per-page via a `keydown` listener (see `speech-recognition.tsx`).
-- **Speech recognition flow** (`speech-recognition.tsx`): wraps the `webkitSpeechRecognition` API with manually-declared TypeScript interfaces (the lib types aren't pulled in). It self-restarts on `onsoundend`/`onerror`/final result to keep continuous captioning alive. Text/background colors use native `<input type="color">` (no color-picker dependency; alpha is not supported but unused).
+- **Speech recognition flow** (`speech-recognition.tsx`): wraps the `webkitSpeechRecognition` API with manually-declared TypeScript interfaces. It self-restarts on `onsoundend`/`onerror`/final result to keep continuous captioning alive. Text/background colors use native `<input type="color">`.
 
 ## Known gotchas
 
-- TypeScript uses project references (`tsc -b`): `tsconfig.app.json` covers `src`, `tsconfig.node.json` covers the Vite/config files. Strict mode plus `noUnusedLocals`/`noUnusedParameters` are on, so dead bindings fail the build. Because the whole `src` tree is type-checked, a broken or unused page still fails `pnpm build` even if it isn't wired up as an entry in `vite.config.ts`.
+- TypeScript extends `astro/tsconfigs/strict`. `noUnusedLocals`/`noUnusedParameters` are on, so dead bindings fail `astro check`. The whole `src` tree is type-checked.
+- All React components use `client:only="react"`, meaning they are **not** server-rendered. This is intentional — they rely on browser APIs (`window`, `SpeechRecognition`, `setInterval`).

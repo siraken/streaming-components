@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { RootLayout } from '../ui/layouts/root';
 
-const FONT = import.meta.env.VITE_CLOCK_FONT;
-const WEIGHT = import.meta.env.VITE_CLOCK_WEIGHT;
+const FONT = import.meta.env.PUBLIC_CLOCK_FONT;
+const WEIGHT = import.meta.env.PUBLIC_CLOCK_WEIGHT;
 
 const zeroFill = (num: number) => {
   return `00${num}`.slice(-2);
@@ -12,7 +11,6 @@ export const Clock = () => {
   const [time, setTime] = useState('Loading...');
 
   useEffect(() => {
-    // 表示時刻のオフセットはクエリ文字列で受け取る (例: /clock/?unit=min&delay=5)
     const params = new URLSearchParams(window.location.search);
     const unit = params.get('unit');
     const delay = params.get('delay');
@@ -24,11 +22,8 @@ export const Clock = () => {
       let second: number = now.getSeconds();
 
       if (unit && delay) {
-        // convert to number
         const d = Number(delay);
 
-        // return error if given args are:
-        // hour < 24 | minute < 60 | second < 60
         if (
           (unit === 'hour' && 24 < d) ||
           (unit === 'min' && 60 < d) ||
@@ -86,21 +81,19 @@ export const Clock = () => {
   }, []);
 
   return (
-    <RootLayout>
-      <div className="tw-p-10">
-        <p
-          style={{
-            fontSize: '5rem',
-            fontWeight: WEIGHT !== '' && WEIGHT !== undefined ? WEIGHT : 'bold',
-            fontFamily:
-              FONT !== '' && FONT !== undefined
-                ? FONT
-                : "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-          }}
-        >
-          {time}
-        </p>
-      </div>
-    </RootLayout>
+    <div className="tw-p-10">
+      <p
+        style={{
+          fontSize: '5rem',
+          fontWeight: WEIGHT !== '' && WEIGHT !== undefined ? WEIGHT : 'bold',
+          fontFamily:
+            FONT !== '' && FONT !== undefined
+              ? FONT
+              : "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+        }}
+      >
+        {time}
+      </p>
+    </div>
   );
 };
