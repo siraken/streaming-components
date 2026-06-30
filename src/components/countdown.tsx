@@ -123,8 +123,6 @@ export const Countdown = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-
         .cd-canvas {
           position: fixed;
           inset: 0;
@@ -139,7 +137,7 @@ export const Countdown = () => {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
         }
 
         .cd-heading {
@@ -153,7 +151,7 @@ export const Countdown = () => {
         }
 
         .cd-timer {
-          font-family: 'JetBrains Mono', monospace;
+          font-family: var(--font-jetbrains-mono), monospace;
           font-size: 5rem;
           font-weight: 700;
           color: #ffffff;

@@ -1,7 +1,7 @@
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 // @astrojs/cloudflare v14 の dev モード (workerd) は client:only island の
 // component-url を絶対ファイルパスで出力し React がマウントされない。
@@ -16,4 +16,21 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  fonts: [
+    {
+      name: 'Inter',
+      cssVariable: '--font-inter',
+      provider: fontProviders.fontsource(),
+    },
+    {
+      name: 'JetBrains Mono',
+      cssVariable: '--font-jetbrains-mono',
+      provider: fontProviders.fontsource(),
+    },
+    {
+      name: 'Noto Sans JP',
+      cssVariable: '--font-noto-sans-jp',
+      provider: fontProviders.fontsource(),
+    },
+  ],
 });

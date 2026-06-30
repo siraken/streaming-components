@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { tv } from 'tailwind-variants';
 
 interface SpeechRecognitionResult {
   isFinal: boolean;
@@ -34,116 +33,71 @@ declare global {
   }
 }
 
-const button = tv({
-  base: 'min-w-[50px] min-h-[30px] px-2 py-1 rounded transition-colors',
-  variants: {
-    variant: {
-      primary: 'bg-blue-500 text-white hover:bg-blue-600',
-      secondary: 'bg-gray-200 hover:bg-gray-300',
-    },
-    size: {
-      default: 'px-2 py-1',
-      large: 'px-4 py-2',
-    },
-  },
-  defaultVariants: {
-    variant: 'secondary',
-    size: 'default',
-  },
-});
+const LANGUAGES = [
+  { value: 'ja-JP', label: '日本語' },
+  { value: 'en-US', label: 'English (US)' },
+  { value: 'ko-KR', label: '한국어' },
+  { value: 'cmn-Hans-CN', label: '中文 (简体)' },
+  { value: 'cmn-Hant-TW', label: '中文 (繁體)' },
+  { value: 'de-DE', label: 'Deutsch' },
+  { value: 'es-ES', label: 'Español' },
+  { value: 'fr-FR', label: 'Français' },
+  { value: 'it-IT', label: 'Italiano' },
+  { value: 'id-ID', label: 'Bahasa Indonesia' },
+  { value: 'fil-PH', label: 'Filipino' },
+  { value: 'nb-NO', label: 'Norsk bokmål' },
+  { value: 'ru-RU', label: 'Русский' },
+  { value: 'uk-UA', label: 'Українська' },
+];
 
-const select = tv({
-  base: 'min-w-[50px] min-h-[30px] px-2 py-1 border border-gray-300 rounded',
-});
-
-const textDisplay = tv({
-  base: 'text-base transition-[font-size] duration-100 ease-out sticky bottom-0',
-  variants: {
-    style: {
-      default: 'text-white',
-      bubble:
-        'relative bg-gray-50 p-5 text-left text-gray-800 rounded-2xl after:content-[""] after:border-transparent after:border-t-[10px] after:border-b-[10px] after:border-l-[30px] after:border-r-[30px] after:border-r-gray-50 after:w-0 after:h-0 after:absolute after:-mt-[10px] after:right-full after:top-1/2 after:pointer-events-none',
-    },
-  },
-  defaultVariants: {
-    style: 'default',
-  },
-});
+type Status = 'idle' | 'listening' | 'paused' | 'error';
 
 export const SpeechRecognition = () => {
-  const [status, setStatus] = useState('SpeechRecognition');
-  const [resultText, setResultText] = useState(
-    'Press "Start" button to start...',
-  );
-  const [fontSize, setFontSize] = useState(1);
-  const [fontWeight, setFontWeight] = useState('normal');
-  const [fontStyle, setFontStyle] = useState('normal');
-  const [textStyle, setTextStyle] = useState('default');
-  const [textWidth, setTextWidth] = useState(250);
+  const [status, setStatus] = useState<Status>('idle');
+  const [text, setText] = useState('');
+  const [fontSize, setFontSize] = useState(2);
   const [textColor, setTextColor] = useState('#ffffff');
-  const [bgColor, setBgColor] = useState('#008000');
+  const [bgColor, setBgColor] = useState('transparent');
   const [language, setLanguage] = useState('ja-JP');
-  const [viewHeight, setViewHeight] = useState('');
-  const [viewVisibility, setViewVisibility] = useState('visible');
+  const [panelOpen, setPanelOpen] = useState(true);
 
   const viewRef = useRef<HTMLDivElement>(null);
   const speechFlagRef = useRef(false);
 
-  const handleFontSizeChange = (size: number) => {
-    if (size === 0) {
-      setFontSize(1);
-    } else {
-      setFontSize((prev) => prev + size);
-    }
-  };
-
-  const handleTextStyleChange = (style: string) => {
-    setTextStyle(style);
-  };
-
-  const SpeechRecognitionAPI =
+  const SpeechRecognitionImpl =
     window.speechRecognition || window.webkitSpeechRecognition;
 
   const startRecognition = () => {
-    if (!SpeechRecognitionAPI) {
-      setStatus('Speech Recognition not supported');
+    if (!SpeechRecognitionImpl) {
+      setStatus('error');
       return;
     }
 
-    const recognition = new SpeechRecognitionAPI();
+    const recognition = new SpeechRecognitionImpl();
     recognition.lang = language;
     recognition.interimResults = true;
     recognition.continuous = true;
 
-    recognition.onsoundstart = () => {
-      setStatus('Listening...');
-    };
+    recognition.onsoundstart = () => setStatus('listening');
 
-    recognition.onnomatch = () => {
-      setStatus('Try again');
-    };
+    recognition.onnomatch = () => setStatus('paused');
 
-    recognition.onerror = (e: Event) => {
-      console.error(e);
-      setStatus('Error!! Retrying...');
-      if (!speechFlagRef.current) {
-        startRecognition();
-      }
+    recognition.onerror = () => {
+      setStatus('error');
+      if (!speechFlagRef.current) startRecognition();
     };
 
     recognition.onsoundend = () => {
-      setStatus('Paused');
+      setStatus('paused');
       startRecognition();
     };
 
     recognition.onresult = (e: SpeechRecognitionEvent) => {
-      const results = e.results;
-      for (let i = e.resultIndex; i < results.length; i++) {
-        if (results[i].isFinal) {
-          setResultText(results[i][0].transcript);
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        setText(e.results[i][0].transcript);
+        if (e.results[i].isFinal) {
           startRecognition();
         } else {
-          setResultText(results[i][0].transcript);
           speechFlagRef.current = true;
         }
       }
@@ -158,212 +112,310 @@ export const SpeechRecognition = () => {
 
   const handleStart = () => {
     startRecognition();
-    setResultText('');
+    setText('');
   };
 
   useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'f') {
-        setViewHeight('100vh');
-      }
-      if (e.key === 'Escape') {
-        setViewHeight('');
-      }
-      if (e.key === 'c') {
-        setViewVisibility((prev) => (prev === 'hidden' ? 'visible' : 'hidden'));
-      }
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPanelOpen((v) => !v);
     };
-
-    window.addEventListener('keydown', handleKeydown);
-    return () => window.removeEventListener('keydown', handleKeydown);
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, []);
 
+  const statusLabel: Record<Status, string> = {
+    idle: 'Ready',
+    listening: 'Listening',
+    paused: 'Paused',
+    error: 'Error',
+  };
+
+  const statusColor: Record<Status, string> = {
+    idle: 'rgba(255,255,255,0.4)',
+    listening: '#22c55e',
+    paused: '#eab308',
+    error: '#ef4444',
+  };
+
   return (
-    <div className="font-sans text-base h-screen p-0 m-0">
-      <section className="mx-4 my-0 h-[50vh] overflow-y-auto">
-        <h1 className="text-xl font-bold mb-4">{status}</h1>
-        <button
-          type="button"
-          onClick={handleStart}
-          className={button({ variant: 'primary', size: 'large' })}
-        >
-          Start
-        </button>
-        <div className="mt-4">
-          <div className="mb-2">
-            <span className="inline-block min-w-[180px]">
-              Font size({fontSize}rem):
-            </span>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(-1)}
-              className={button({ className: 'mx-1' })}
-            >
-              -1
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(-0.5)}
-              className={button({ className: 'mx-1' })}
-            >
-              -0.5
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(0)}
-              className={button({ className: 'mx-1' })}
-            >
-              Base
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(0.5)}
-              className={button({ className: 'mx-1' })}
-            >
-              +0.5
-            </button>
-            <button
-              type="button"
-              onClick={() => handleFontSizeChange(1)}
-              className={button({ className: 'mx-1' })}
-            >
-              +1
-            </button>
-          </div>
-          <div className="mb-2">
-            <label htmlFor="font-weight" className="inline-block min-w-[180px]">
-              Font weight:
-            </label>
-            <select
-              id="font-weight"
-              value={fontWeight}
-              onChange={(e) => setFontWeight(e.target.value)}
-              className={select()}
-            >
-              <option value="normal">Default</option>
-              <option value="bold">Bold</option>
-            </select>
-          </div>
-          <div className="mb-2">
-            <label htmlFor="font-style" className="inline-block min-w-[180px]">
-              Font style:
-            </label>
-            <select
-              id="font-style"
-              value={fontStyle}
-              onChange={(e) => setFontStyle(e.target.value)}
-              className={select()}
-            >
-              <option value="normal">Default</option>
-              <option value="italic">Italic</option>
-            </select>
-          </div>
-          <div className="mb-2">
-            <label htmlFor="text-style" className="inline-block min-w-[180px]">
-              Text style:
-            </label>
-            <select
-              id="text-style"
-              value={textStyle}
-              onChange={(e) => handleTextStyleChange(e.target.value)}
-              className={select()}
-            >
-              <option value="default">Default</option>
-              <option value="bubble">Bubble</option>
-            </select>
-          </div>
-          <div className="mb-2">
-            <label htmlFor="text-width" className="inline-block min-w-[180px]">
-              Text width({textWidth}px):
-            </label>
-            <input
-              id="text-width"
-              type="range"
-              min="0"
-              max="1920"
-              value={textWidth}
-              onChange={(e) => setTextWidth(Number(e.target.value))}
-              className="min-w-[50px] min-h-[30px]"
+    <>
+      <style>{`
+        .sr-root {
+          position: fixed;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          font-family: var(--font-inter), var(--font-noto-sans-jp), sans-serif;
+          overflow: hidden;
+        }
+
+        /* --- Control Panel --- */
+        .sr-panel {
+          background: #1a1a2e;
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 16px 24px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          flex-wrap: wrap;
+          z-index: 10;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .sr-panel.sr-hidden {
+          transform: translateY(-100%);
+          opacity: 0;
+          pointer-events: none;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+        }
+
+        .sr-start-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 20px;
+          border-radius: 8px;
+          border: none;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+          background: #6366f1;
+          color: white;
+        }
+
+        .sr-start-btn:hover {
+          background: #4f46e5;
+        }
+
+        .sr-start-btn svg {
+          width: 14px;
+          height: 14px;
+          fill: currentColor;
+        }
+
+        .sr-status {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: rgba(255,255,255,0.5);
+        }
+
+        .sr-status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+        }
+
+        .sr-divider {
+          width: 1px;
+          height: 24px;
+          background: rgba(255,255,255,0.08);
+        }
+
+        .sr-control-group {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .sr-control-label {
+          font-size: 0.7rem;
+          font-weight: 500;
+          color: rgba(255,255,255,0.35);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          white-space: nowrap;
+        }
+
+        .sr-select {
+          padding: 5px 10px;
+          border-radius: 6px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.04);
+          color: rgba(255,255,255,0.8);
+          font-size: 0.8rem;
+          font-family: inherit;
+          outline: none;
+          cursor: pointer;
+          transition: border-color 0.2s;
+        }
+
+        .sr-select:hover, .sr-select:focus {
+          border-color: rgba(255,255,255,0.2);
+        }
+
+        .sr-select option {
+          background: #1a1a2e;
+        }
+
+        .sr-size-btns {
+          display: flex;
+          gap: 2px;
+        }
+
+        .sr-size-btn {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.04);
+          color: rgba(255,255,255,0.5);
+          font-size: 0.8rem;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s, color 0.2s;
+        }
+
+        .sr-size-btn:hover {
+          background: rgba(255,255,255,0.08);
+          color: rgba(255,255,255,0.9);
+        }
+
+        .sr-color-input {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+          border: 1px solid rgba(255,255,255,0.08);
+          padding: 2px;
+          background: transparent;
+          cursor: pointer;
+        }
+
+        /* --- Display Area --- */
+        .sr-display {
+          flex: 1;
+          display: flex;
+          align-items: flex-end;
+          padding: 40px;
+          overflow-y: auto;
+        }
+
+        .sr-text {
+          font-weight: 500;
+          line-height: 1.5;
+          max-width: 90%;
+          word-break: break-word;
+        }
+
+        .sr-text-empty {
+          color: rgba(255,255,255,0.15);
+          font-style: italic;
+        }
+
+        .sr-hint {
+          position: fixed;
+          bottom: 12px;
+          right: 16px;
+          font-size: 0.65rem;
+          color: rgba(255,255,255,0.15);
+          pointer-events: none;
+        }
+      `}</style>
+      <div className="sr-root">
+        <div className={`sr-panel ${panelOpen ? '' : 'sr-hidden'}`}>
+          <button type="button" className="sr-start-btn" onClick={handleStart}>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" fill="none" strokeWidth="2" />
+            </svg>
+            Start
+          </button>
+
+          <div className="sr-status">
+            <div
+              className="sr-status-dot"
+              style={{
+                backgroundColor: statusColor[status],
+                boxShadow: status === 'listening' ? `0 0 6px ${statusColor[status]}` : 'none',
+              }}
             />
+            {statusLabel[status]}
           </div>
-          <div className="mb-2">
-            <label htmlFor="text-color" className="inline-block min-w-[180px]">
-              Text color:
-            </label>
-            <input
-              id="text-color"
-              type="color"
-              value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              className="min-w-[50px] min-h-[30px] align-middle cursor-pointer"
-              aria-label="テキストカラー"
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="bg-color" className="inline-block min-w-[180px]">
-              Background color:
-            </label>
-            <input
-              id="bg-color"
-              type="color"
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-              className="min-w-[50px] min-h-[30px] align-middle cursor-pointer"
-              aria-label="背景カラー"
-            />
-          </div>
-          <div className="mb-2">
-            <label htmlFor="language" className="inline-block min-w-[180px]">
-              Language:
-            </label>
+
+          <div className="sr-divider" />
+
+          <div className="sr-control-group">
+            <span className="sr-control-label">Lang</span>
             <select
-              id="language"
+              className="sr-select"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className={select()}
             >
-              <option value="id-ID">Bahasa Indonesia</option>
-              <option value="en-US">English (US)</option>
-              <option value="es-ES">Espa&#241;ol</option>
-              <option value="de-DE">Deutsch</option>
-              <option value="fil-PH">Filipino</option>
-              <option value="fr-FR">Fran&#231;ais</option>
-              <option value="it-IT">Italiano</option>
-              <option value="nb-NO">Norsk bokm&#229;l</option>
-              <option value="ru-RU">Pусский</option>
-              <option value="uk-UA">Українська</option>
-              <option value="ko-KR">한국어</option>
-              <option value="cmn-Hans-CN">普通话 (中国大陆)</option>
-              <option value="cmn-Hant-TW">中文 (台灣)</option>
-              <option value="ja-JP">日本語</option>
+              {LANGUAGES.map((l) => (
+                <option key={l.value} value={l.value}>{l.label}</option>
+              ))}
             </select>
           </div>
+
+          <div className="sr-divider" />
+
+          <div className="sr-control-group">
+            <span className="sr-control-label">Size</span>
+            <div className="sr-size-btns">
+              <button
+                type="button"
+                className="sr-size-btn"
+                onClick={() => setFontSize((s) => Math.max(0.5, s - 0.5))}
+              >
+                -
+              </button>
+              <button
+                type="button"
+                className="sr-size-btn"
+                onClick={() => setFontSize((s) => s + 0.5)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div className="sr-control-group">
+            <span className="sr-control-label">Text</span>
+            <input
+              type="color"
+              className="sr-color-input"
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+            />
+          </div>
+
+          <div className="sr-control-group">
+            <span className="sr-control-label">BG</span>
+            <input
+              type="color"
+              className="sr-color-input"
+              value={bgColor === 'transparent' ? '#000000' : bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+            />
+          </div>
         </div>
-      </section>
-      <section
-        ref={viewRef}
-        className="bg-green-600 box-border absolute bottom-0 left-0 w-full h-[50vh] p-12 overflow-y-auto transition-[height] duration-100 ease-out"
-        style={{
-          backgroundColor: bgColor,
-          height: viewHeight,
-          visibility: viewVisibility as 'visible' | 'hidden',
-        }}
-      >
+
         <div
-          className={textDisplay({
-            style: textStyle === 'bubble' ? 'bubble' : 'default',
-          })}
-          style={{
-            width: `${textWidth}px`,
-            fontSize: `${fontSize}rem`,
-            fontWeight: fontWeight,
-            fontStyle: fontStyle,
-            color: textColor,
-          }}
+          ref={viewRef}
+          className="sr-display"
+          style={{ backgroundColor: bgColor }}
         >
-          {resultText}
+          <div
+            className={`sr-text ${!text ? 'sr-text-empty' : ''}`}
+            style={{
+              fontSize: `${fontSize}rem`,
+              color: textColor,
+            }}
+          >
+            {text || (status === 'idle' ? 'Press Start to begin' : 'Waiting for speech...')}
+          </div>
         </div>
-      </section>
-    </div>
+
+        <div className="sr-hint">ESC to toggle panel</div>
+      </div>
+    </>
   );
 };

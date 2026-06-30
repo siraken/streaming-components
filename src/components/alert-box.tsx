@@ -93,8 +93,6 @@ export const AlertBox = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
         .ab-container {
           position: fixed;
           display: flex;
@@ -102,7 +100,7 @@ export const AlertBox = () => {
           gap: 10px;
           pointer-events: none;
           z-index: 9999;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
         }
 
         .ab-alert {

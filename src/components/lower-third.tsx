@@ -57,13 +57,11 @@ export const LowerThird = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
         .lt-root {
           position: fixed;
           bottom: 60px;
           left: 60px;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), sans-serif;
           pointer-events: none;
         }
 
