@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useOBSStudio } from '../hooks/use-obs-studio';
 
 type AlertStyle = 'slide' | 'pop' | 'fade';
 
@@ -31,6 +32,7 @@ export const AlertBox = () => {
   const [config] = useState(parseParams);
   const [alerts, setAlerts] = useState<AlertItem[]>([]);
   const nextId = useRef(0);
+  const obs = useOBSStudio();
 
   const addAlert = useCallback(
     (message: string) => {
@@ -57,8 +59,10 @@ export const AlertBox = () => {
     [config.duration],
   );
 
+  const sourceVisible = obs.available ? obs.visible : true;
+
   useEffect(() => {
-    if (!config.demo) return;
+    if (!config.demo || !sourceVisible) return;
 
     let idx = 0;
     const interval = setInterval(() => {
@@ -70,7 +74,7 @@ export const AlertBox = () => {
     idx = 1;
 
     return () => clearInterval(interval);
-  }, [config.demo, addAlert]);
+  }, [config.demo, addAlert, sourceVisible]);
 
   useEffect(() => {
     const handler = (e: MessageEvent) => {

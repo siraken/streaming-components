@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useOBSStudio } from '../hooks/use-obs-studio';
 
 type Mode = 'starting' | 'brb' | 'ending';
 
@@ -27,18 +28,28 @@ function formatTime(totalSeconds: number) {
 export const Countdown = () => {
   const [config] = useState(parseParams);
   const [remaining, setRemaining] = useState(config.minutes * 60);
+  const [started, setStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const obs = useOBSStudio();
   const labels = config.title
     ? { heading: config.title, sub: MODE_LABELS[config.mode].sub }
     : MODE_LABELS[config.mode];
 
   useEffect(() => {
-    if (remaining <= 0) return;
+    const sourceVisible = obs.available ? obs.visible : true;
+    if (sourceVisible && !started) {
+      setStarted(true);
+      setRemaining(config.minutes * 60);
+    }
+  }, [obs.available, obs.visible, started, config.minutes]);
+
+  useEffect(() => {
+    if (!started || remaining <= 0) return;
     const id = setInterval(() => {
       setRemaining((r) => Math.max(0, r - 1));
     }, 1000);
     return () => clearInterval(id);
-  }, [remaining]);
+  }, [started, remaining]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

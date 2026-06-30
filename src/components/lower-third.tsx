@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useOBSStudio } from '../hooks/use-obs-studio';
 
 interface Config {
   name: string;
@@ -22,19 +23,31 @@ function parseConfig(): Config {
 export const LowerThird = () => {
   const [config] = useState(parseConfig);
   const [visible, setVisible] = useState(false);
+  const obs = useOBSStudio();
+  const hideTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
-    const showTimer = setTimeout(() => setVisible(true), 300);
-    const timers = [showTimer];
+    const sourceVisible = obs.available ? obs.visible : true;
 
-    if (config.duration > 0) {
-      timers.push(
-        setTimeout(() => setVisible(false), config.duration * 1000 + 300),
-      );
+    if (sourceVisible) {
+      const showTimer = setTimeout(() => setVisible(true), 300);
+
+      if (config.duration > 0) {
+        hideTimer.current = setTimeout(
+          () => setVisible(false),
+          config.duration * 1000 + 300,
+        );
+      }
+
+      return () => {
+        clearTimeout(showTimer);
+        clearTimeout(hideTimer.current);
+      };
     }
 
-    return () => timers.forEach(clearTimeout);
-  }, [config.duration]);
+    setVisible(false);
+    clearTimeout(hideTimer.current);
+  }, [obs.available, obs.visible, config.duration]);
 
   const accentRgb = hexToRgb(config.accent);
   const glowColor = accentRgb
