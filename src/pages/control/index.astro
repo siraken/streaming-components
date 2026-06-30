@@ -5,15 +5,23 @@ import Layout from '../../layouts/Base.astro';
 import '../../styles/globals.css';
 
 const icons: Record<string, string> = {
+  countdown: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><polyline points="12 9 12 13 15 16"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="9" y1="2" x2="15" y2="2"/></svg>',
+  pause: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>',
+  heart: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+  chat: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
   music: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
   gamepad: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
   users: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
 };
 
 const items = [
-  { name: 'Karaoke', url: '/control/karaoke/', description: '曲名・アーティスト名をリアルタイム更新。', icon: 'music', screen: '/screens/karaoke/' },
-  { name: 'Gaming', url: '/control/gaming/', description: 'ゲームタイトル・表示名を更新。', icon: 'gamepad', screen: '/screens/gaming/' },
+  { name: 'Starting Soon', url: '/control/starting-soon/', description: '待機画面のタイトルを更新。', icon: 'countdown', screen: '/screens/starting-soon/' },
+  { name: 'BRB', url: '/control/brb/', description: '離席画面のタイトルを更新。', icon: 'pause', screen: '/screens/brb/' },
+  { name: 'Ending', url: '/control/ending/', description: '終了画面のタイトル・SNSを更新。', icon: 'heart', screen: '/screens/ending/' },
+  { name: 'Just Chatting', url: '/control/just-chatting/', description: '表示名・タイトル・SNSを更新。', icon: 'chat', screen: '/screens/just-chatting/' },
   { name: 'Zatsudan', url: '/control/zatsudan/', description: '配信タイトル・トピックを更新。', icon: 'users', screen: '/screens/zatsudan/' },
+  { name: 'Gaming', url: '/control/gaming/', description: 'ゲームタイトル・表示名を更新。', icon: 'gamepad', screen: '/screens/gaming/' },
+  { name: 'Karaoke', url: '/control/karaoke/', description: '曲名・アーティスト名を更新。', icon: 'music', screen: '/screens/karaoke/' },
 ];
 ---
 

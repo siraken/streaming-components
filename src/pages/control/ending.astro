@@ -1,0 +1,20 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { ChannelControl } from '../../components/control/channel-control';
+import '../../styles/globals.css';
+---
+
+<Layout title="Ending Control">
+  <ChannelControl
+    client:only="react"
+    channel="ending"
+    accent="#6366f1"
+    screenPath="/screens/ending/"
+    fields={[
+      { key: 'title', label: 'タイトル', placeholder: 'THANKS FOR WATCHING' },
+      { key: 'social', label: 'SNS', placeholder: '@handle' },
+    ]}
+  />
+</Layout>

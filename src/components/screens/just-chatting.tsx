@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -16,6 +17,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 export const JustChattingScreen = () => {
   const [config] = useState(parseParams);
+  const ch = useChannel('just-chatting');
+  const name = ch.name ?? config.name;
+  const title = ch.title ?? config.title;
+  const social = ch.social ?? config.social;
   const [time, setTime] = useState({ h: '00', m: '00', s: '00', ampm: '' });
   const [visible, setVisible] = useState(false);
 
@@ -264,10 +269,10 @@ export const JustChattingScreen = () => {
 
         <div className="jc-info-bar">
           <div className="jc-accent-line" />
-          <div className="jc-info-name">{config.name}</div>
+          <div className="jc-info-name">{name}</div>
           <div className="jc-info-divider" />
-          <div className="jc-info-title">{config.title}</div>
-          <div className="jc-info-social">{config.social}</div>
+          <div className="jc-info-title">{title}</div>
+          <div className="jc-info-social">{social}</div>
           <div className="jc-info-right">
             {config.showClock && (
               <div className="jc-clock">

@@ -1,0 +1,19 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { ChannelControl } from '../../components/control/channel-control';
+import '../../styles/globals.css';
+---
+
+<Layout title="BRB Control">
+  <ChannelControl
+    client:only="react"
+    channel="brb"
+    accent="#8b5cf6"
+    screenPath="/screens/brb/"
+    fields={[
+      { key: 'title', label: 'タイトル', placeholder: 'BE RIGHT BACK' },
+    ]}
+  />
+</Layout>

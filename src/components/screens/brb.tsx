@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -10,6 +11,7 @@ function parseParams() {
 
 export const BrbScreen = () => {
   const [config] = useState(parseParams);
+  const ch = useChannel('brb');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dots, setDots] = useState('');
 
@@ -65,7 +67,7 @@ export const BrbScreen = () => {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const title = config.title || 'BE RIGHT BACK';
+  const title = (ch.title ?? config.title) || 'BE RIGHT BACK';
 
   return (
     <>

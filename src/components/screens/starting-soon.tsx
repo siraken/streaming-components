@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -13,6 +14,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 export const StartingSoonScreen = () => {
   const [config] = useState(parseParams);
+  const ch = useChannel('starting-soon');
   const [remaining, setRemaining] = useState(config.minutes * 60);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -70,7 +72,7 @@ export const StartingSoonScreen = () => {
   const m = Math.floor(remaining / 60);
   const s = remaining % 60;
   const progress = config.minutes > 0 ? 1 - remaining / (config.minutes * 60) : 1;
-  const title = config.title || 'STARTING SOON';
+  const title = (ch.title ?? config.title) || 'STARTING SOON';
 
   return (
     <>

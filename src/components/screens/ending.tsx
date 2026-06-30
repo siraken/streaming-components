@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -11,6 +12,7 @@ function parseParams() {
 
 export const EndingScreen = () => {
   const [config] = useState(parseParams);
+  const ch = useChannel('ending');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -64,7 +66,8 @@ export const EndingScreen = () => {
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const title = config.title || 'THANKS FOR WATCHING';
+  const title = (ch.title ?? config.title) || 'THANKS FOR WATCHING';
+  const endSocial = ch.social ?? config.social;
 
   return (
     <>
@@ -149,7 +152,7 @@ export const EndingScreen = () => {
           <div className="end-heading">{title}</div>
           <div className="end-divider" />
           <div className="end-sub">See you next time</div>
-          {config.social && <div className="end-social">{config.social}</div>}
+          {endSocial && <div className="end-social">{endSocial}</div>}
         </div>
       </div>
     </>

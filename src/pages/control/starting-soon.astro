@@ -1,0 +1,19 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { ChannelControl } from '../../components/control/channel-control';
+import '../../styles/globals.css';
+---
+
+<Layout title="Starting Soon Control">
+  <ChannelControl
+    client:only="react"
+    channel="starting-soon"
+    accent="#6366f1"
+    screenPath="/screens/starting-soon/"
+    fields={[
+      { key: 'title', label: 'タイトル', placeholder: 'STARTING SOON' },
+    ]}
+  />
+</Layout>
