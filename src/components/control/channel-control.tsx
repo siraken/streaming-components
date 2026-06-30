@@ -148,6 +148,29 @@ export const ChannelControl = ({ channel, fields, accent = '#6366f1', screenPath
 
         .cc-header {
           margin-bottom: 32px;
+          display: flex;
+          align-items: flex-start;
+          gap: 14px;
+        }
+
+        .cc-back {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.04);
+          color: rgba(255, 255, 255, 0.4);
+          text-decoration: none;
+          flex-shrink: 0;
+          transition: background 0.2s, color 0.2s;
+          margin-top: 2px;
+        }
+
+        .cc-back:hover {
+          background: rgba(255, 255, 255, 0.08);
+          color: rgba(255, 255, 255, 0.8);
         }
 
         .cc-title {
@@ -399,6 +422,10 @@ export const ChannelControl = ({ channel, fields, accent = '#6366f1', screenPath
       <div className="cc-root">
         <div className="cc-container">
           <div className="cc-header">
+            <a href="/control/" className="cc-back">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+            </a>
+            <div>
             <div className="cc-title">Control Panel</div>
             <div className="cc-channel">{channel}</div>
             {screenPath && (
@@ -416,6 +443,7 @@ export const ChannelControl = ({ channel, fields, accent = '#6366f1', screenPath
                 </svg>
               </a>
             )}
+            </div>
           </div>
 
           {/* Token */}
