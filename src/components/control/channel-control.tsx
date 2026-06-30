@@ -11,6 +11,7 @@ interface Props {
   channel: string;
   fields: Field[];
   accent?: string;
+  screenPath?: string;
 }
 
 function loadToken(): string {
@@ -21,7 +22,7 @@ function saveToken(token: string) {
   localStorage.setItem('control-token', token);
 }
 
-export const ChannelControl = ({ channel, fields, accent = '#6366f1' }: Props) => {
+export const ChannelControl = ({ channel, fields, accent = '#6366f1', screenPath }: Props) => {
   const [token, setToken] = useState('');
   const [tokenSaved, setTokenSaved] = useState(false);
   const [values, setValues] = useState<Record<string, string>>({});
@@ -160,6 +161,33 @@ export const ChannelControl = ({ channel, fields, accent = '#6366f1' }: Props) =
           color: ${accent};
           font-weight: 500;
           margin-top: 4px;
+        }
+
+        .cc-screen-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-top: 12px;
+          padding: 6px 12px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          color: rgba(255, 255, 255, 0.5);
+          text-decoration: none;
+          font-size: 0.75rem;
+          font-weight: 500;
+          transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .cc-screen-link:hover {
+          background: rgba(255, 255, 255, 0.08);
+          border-color: ${accent}40;
+          color: ${accent};
+        }
+
+        .cc-screen-link svg {
+          width: 14px;
+          height: 14px;
         }
 
         .cc-section {
@@ -373,6 +401,21 @@ export const ChannelControl = ({ channel, fields, accent = '#6366f1' }: Props) =
           <div className="cc-header">
             <div className="cc-title">Control Panel</div>
             <div className="cc-channel">{channel}</div>
+            {screenPath && (
+              <a href={screenPath} target="_blank" rel="noopener noreferrer" className="cc-screen-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+                画面を開く
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            )}
           </div>
 
           {/* Token */}
