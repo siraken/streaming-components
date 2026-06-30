@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import { Countdown } from '../components/countdown';
+import '../styles/globals.css';
+---
+
+<Layout title="Countdown">
+  <Countdown client:only="react" />
+</Layout>

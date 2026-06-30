@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import { LowerThird } from '../components/lower-third';
+import '../styles/globals.css';
+---
+
+<Layout title="Lower Third">
+  <LowerThird client:only="react" />
+</Layout>

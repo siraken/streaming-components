@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import { Particles } from '../components/particles';
+import '../styles/globals.css';
+---
+
+<Layout title="Particles">
+  <Particles client:only="react" />
+</Layout>
