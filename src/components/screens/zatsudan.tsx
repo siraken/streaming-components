@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -18,6 +19,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 export const ZatsudanScreen = () => {
   const [config] = useState(parseParams);
+  const ch = useChannel('zatsudan');
+  const streamTitle = ch.title ?? config.title;
+  const topic = ch.topic ?? config.topic;
   const [time, setTime] = useState({ h: '00', m: '00', ampm: '' });
   const [visible, setVisible] = useState(false);
 
@@ -370,7 +374,7 @@ export const ZatsudanScreen = () => {
             <div className="zt-channel-dot" />
             <span className="zt-channel-name">{config.name}</span>
           </div>
-          <span className="zt-stream-title">{config.title}</span>
+          <span className="zt-stream-title">{streamTitle}</span>
           <div className="zt-top-right">
             {config.showClock && (
               <div className="zt-clock">
@@ -419,10 +423,10 @@ export const ZatsudanScreen = () => {
         </div>
 
         {/* Topic Panel */}
-        {config.topic && (
+        {topic && (
           <div className="zt-topic">
             <div className="zt-topic-label">Topic</div>
-            <div className="zt-topic-text">{config.topic}</div>
+            <div className="zt-topic-text">{topic}</div>
           </div>
         )}
 
@@ -431,7 +435,7 @@ export const ZatsudanScreen = () => {
           <div className="zt-bottom-accent" />
           <div className="zt-bottom-name">{config.name}</div>
           <div className="zt-bottom-sep" />
-          <div className="zt-bottom-title">{config.title}</div>
+          <div className="zt-bottom-title">{streamTitle}</div>
           <div className="zt-bottom-social">{config.social}</div>
         </div>
       </div>

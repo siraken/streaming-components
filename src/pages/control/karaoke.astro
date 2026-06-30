@@ -1,0 +1,19 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { ChannelControl } from '../../components/control/channel-control';
+import '../../styles/globals.css';
+---
+
+<Layout title="Karaoke Control">
+  <ChannelControl
+    client:only="react"
+    channel="karaoke"
+    accent="#f472b6"
+    fields={[
+      { key: 'song', label: '曲名', placeholder: '曲名を入力' },
+      { key: 'artist', label: 'アーティスト', placeholder: 'アーティスト名を入力' },
+    ]}
+  />
+</Layout>

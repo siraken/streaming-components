@@ -1,0 +1,19 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { ChannelControl } from '../../components/control/channel-control';
+import '../../styles/globals.css';
+---
+
+<Layout title="Zatsudan Control">
+  <ChannelControl
+    client:only="react"
+    channel="zatsudan"
+    accent="#a78bfa"
+    fields={[
+      { key: 'title', label: '配信タイトル', placeholder: 'タイトルを入力' },
+      { key: 'topic', label: 'トピック', placeholder: '話題を入力' },
+    ]}
+  />
+</Layout>
