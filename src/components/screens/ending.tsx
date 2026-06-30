@@ -126,14 +126,14 @@ export const EndingScreen = () => {
         }
 
         .end-sub {
-          font-size: 18px;
+          font-size: 24px;
           font-weight: 300;
           color: rgba(255, 255, 255, 0.3);
           letter-spacing: 0.06em;
         }
 
         .end-social {
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 600;
           color: ${config.accent};
           margin-top: 40px;

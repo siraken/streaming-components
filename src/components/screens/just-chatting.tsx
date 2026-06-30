@@ -84,7 +84,7 @@ export const JustChattingScreen = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
@@ -152,7 +152,7 @@ export const JustChattingScreen = () => {
         }
 
         .jc-info-name {
-          font-size: 18px;
+          font-size: 24px;
           font-weight: 700;
           color: #ffffff;
         }
@@ -165,13 +165,13 @@ export const JustChattingScreen = () => {
         }
 
         .jc-info-title {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.45);
         }
 
         .jc-info-social {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 600;
           color: ${config.accent};
           margin-left: 24px;
@@ -186,7 +186,7 @@ export const JustChattingScreen = () => {
 
         .jc-clock {
           font-family: var(--font-jetbrains-mono), monospace;
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 600;
           color: rgba(255, 255, 255, 0.7);
           letter-spacing: 0.02em;
@@ -203,13 +203,13 @@ export const JustChattingScreen = () => {
         }
 
         .jc-clock-seconds {
-          font-size: 12px;
+          font-size: 24px;
           color: rgba(255, 255, 255, 0.3);
           margin-left: 4px;
         }
 
         .jc-clock-ampm {
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 500;
           color: ${config.accent};
           margin-left: 6px;
@@ -239,7 +239,7 @@ export const JustChattingScreen = () => {
           position: absolute;
           top: 16px;
           left: 20px;
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;

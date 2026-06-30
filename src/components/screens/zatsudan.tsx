@@ -112,14 +112,14 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-channel-name {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 700;
           color: rgba(255, 255, 255, 0.9);
         }
 
         .zt-stream-title {
           margin-left: 24px;
-          font-size: 13px;
+          font-size: 24px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.4);
         }
@@ -133,7 +133,7 @@ export const ZatsudanScreen = () => {
 
         .zt-clock {
           font-family: var(--font-jetbrains-mono), monospace;
-          font-size: 16px;
+          font-size: 24px;
           font-weight: 600;
           color: rgba(255, 255, 255, 0.6);
         }
@@ -149,7 +149,7 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-clock-ampm {
-          font-size: 10px;
+          font-size: 24px;
           color: ${config.accent1};
           margin-left: 4px;
         }
@@ -242,7 +242,7 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-chat-header-text {
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 600;
           text-transform: uppercase;
           letter-spacing: 0.1em;
@@ -271,7 +271,7 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-topic-label {
-          font-size: 10px;
+          font-size: 24px;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.12em;
@@ -280,7 +280,7 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-topic-text {
-          font-size: 15px;
+          font-size: 24px;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.7);
           line-height: 1.5;
@@ -320,7 +320,7 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-bottom-name {
-          font-size: 18px;
+          font-size: 28px;
           font-weight: 700;
           background: linear-gradient(135deg, ${config.accent1}, ${config.accent2});
           -webkit-background-clip: text;
@@ -336,13 +336,13 @@ export const ZatsudanScreen = () => {
         }
 
         .zt-bottom-title {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.4);
         }
 
         .zt-bottom-social {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 600;
           color: ${config.accent1};
           margin-left: auto;

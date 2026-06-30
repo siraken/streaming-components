@@ -132,7 +132,7 @@ export const GamingScreen = () => {
         }
 
         .gm-cam-name-text {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 700;
           color: rgba(255, 255, 255, 0.9);
           text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
@@ -167,7 +167,7 @@ export const GamingScreen = () => {
         }
 
         .gm-cam-live-text {
-          font-size: 10px;
+          font-size: 24px;
           font-weight: 700;
           color: #ef4444;
           letter-spacing: 0.08em;
@@ -180,7 +180,7 @@ export const GamingScreen = () => {
           bottom: 0;
           left: 0;
           right: 0;
-          height: 52px;
+          height: 72px;
           background: linear-gradient(135deg, rgba(8, 8, 16, 0.95), rgba(15, 15, 30, 0.92));
           backdrop-filter: blur(20px);
           display: flex;
@@ -207,14 +207,14 @@ export const GamingScreen = () => {
         }
 
         .gm-bar-game-icon {
-          width: 20px;
-          height: 20px;
+          width: 28px;
+          height: 28px;
           color: ${config.accent1};
           margin-right: 10px;
         }
 
         .gm-bar-game {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 700;
           color: rgba(255, 255, 255, 0.85);
         }
@@ -227,7 +227,7 @@ export const GamingScreen = () => {
         }
 
         .gm-bar-name {
-          font-size: 13px;
+          font-size: 24px;
           font-weight: 500;
           background: linear-gradient(135deg, ${config.accent1}, ${config.accent2});
           -webkit-background-clip: text;
@@ -236,7 +236,7 @@ export const GamingScreen = () => {
         }
 
         .gm-bar-social {
-          font-size: 12px;
+          font-size: 24px;
           font-weight: 500;
           color: rgba(255, 255, 255, 0.3);
           margin-left: 12px;
@@ -251,7 +251,7 @@ export const GamingScreen = () => {
 
         .gm-bar-clock {
           font-family: var(--font-jetbrains-mono), monospace;
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 600;
           color: rgba(255, 255, 255, 0.5);
         }
@@ -267,7 +267,7 @@ export const GamingScreen = () => {
         }
 
         .gm-bar-clock-ampm {
-          font-size: 9px;
+          font-size: 24px;
           color: ${config.accent1};
           margin-left: 3px;
         }

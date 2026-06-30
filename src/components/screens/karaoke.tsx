@@ -79,7 +79,7 @@ export const KaraokeScreen = () => {
         }
 
         .kr-top-title {
-          font-size: 16px;
+          font-size: 24px;
           font-weight: 700;
           letter-spacing: 0.3em;
           color: rgba(255, 255, 255, 0.5);
@@ -87,7 +87,7 @@ export const KaraokeScreen = () => {
         }
 
         .kr-top-note {
-          font-size: 18px;
+          font-size: 24px;
           margin: 0 12px;
           background: linear-gradient(135deg, ${config.accent1}, ${config.accent2});
           -webkit-background-clip: text;
@@ -160,7 +160,7 @@ export const KaraokeScreen = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.12em;
@@ -183,7 +183,7 @@ export const KaraokeScreen = () => {
         }
 
         .kr-song-title {
-          font-size: 22px;
+          font-size: 28px;
           font-weight: 700;
           color: rgba(255, 255, 255, 0.9);
           line-height: 1.3;
@@ -191,13 +191,13 @@ export const KaraokeScreen = () => {
         }
 
         .kr-song-artist {
-          font-size: 15px;
+          font-size: 24px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.4);
         }
 
         .kr-empty-hint {
-          font-size: 14px;
+          font-size: 24px;
           color: rgba(255, 255, 255, 0.2);
           font-style: italic;
         }
@@ -248,7 +248,7 @@ export const KaraokeScreen = () => {
           display: flex;
           align-items: center;
           gap: 8px;
-          font-size: 11px;
+          font-size: 24px;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: 0.12em;
@@ -263,7 +263,7 @@ export const KaraokeScreen = () => {
         }
 
         .kr-request-hint {
-          font-size: 14px;
+          font-size: 24px;
           color: rgba(255, 255, 255, 0.25);
         }
 
@@ -301,7 +301,7 @@ export const KaraokeScreen = () => {
         }
 
         .kr-bottom-note {
-          font-size: 20px;
+          font-size: 24px;
           background: linear-gradient(135deg, ${config.accent1}, ${config.accent2});
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -311,26 +311,26 @@ export const KaraokeScreen = () => {
         }
 
         .kr-bottom-song {
-          font-size: 16px;
+          font-size: 24px;
           font-weight: 600;
           color: rgba(255, 255, 255, 0.7);
         }
 
         .kr-bottom-artist {
-          font-size: 14px;
+          font-size: 24px;
           font-weight: 400;
           color: rgba(255, 255, 255, 0.35);
           margin-left: 12px;
         }
 
         .kr-bottom-empty {
-          font-size: 14px;
+          font-size: 24px;
           color: rgba(255, 255, 255, 0.2);
         }
 
         .kr-bottom-name {
           margin-left: auto;
-          font-size: 15px;
+          font-size: 24px;
           font-weight: 700;
           background: linear-gradient(135deg, ${config.accent1}, ${config.accent2});
           -webkit-background-clip: text;
@@ -358,7 +358,7 @@ export const KaraokeScreen = () => {
       <div className={`kr-root ${visible ? 'kr-visible' : ''}`}>
         {/* Floating Notes */}
         <div className="kr-float-note" style={{ top: 150, right: 580, animationDelay: '0s', fontSize: 28 }}>♪</div>
-        <div className="kr-float-note" style={{ top: 300, right: 600, animationDelay: '1s', fontSize: 20 }}>♫</div>
+        <div className="kr-float-note" style={{ top: 300, right: 600, animationDelay: '1s', fontSize: 24 }}>♫</div>
         <div className="kr-float-note" style={{ bottom: 200, right: 580, animationDelay: '2s', fontSize: 24 }}>♬</div>
 
         {/* Top Bar */}

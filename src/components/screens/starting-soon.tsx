@@ -147,7 +147,7 @@ export const StartingSoonScreen = () => {
         }
 
         .ss-sub {
-          font-size: 18px;
+          font-size: 24px;
           font-weight: 300;
           color: rgba(255, 255, 255, 0.3);
           margin-top: 28px;
