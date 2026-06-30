@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useChannel } from '../../hooks/use-channel';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -13,6 +14,9 @@ function parseParams() {
 
 export const KaraokeScreen = () => {
   const [config] = useState(parseParams);
+  const channel = useChannel('karaoke');
+  const song = channel.song ?? config.song;
+  const artist = channel.artist ?? config.artist;
   const [visible, setVisible] = useState(false);
   const [noteIndex, setNoteIndex] = useState(0);
 
@@ -382,10 +386,10 @@ export const KaraokeScreen = () => {
               <div className="kr-now-dot" />
               Now Playing
             </div>
-            {config.song ? (
+            {song ? (
               <>
-                <div className="kr-song-title">{config.song}</div>
-                {config.artist && <div className="kr-song-artist">{config.artist}</div>}
+                <div className="kr-song-title">{song}</div>
+                {artist && <div className="kr-song-artist">{artist}</div>}
               </>
             ) : (
               <div className="kr-empty-hint">Waiting for song...</div>
@@ -417,10 +421,10 @@ export const KaraokeScreen = () => {
         <div className="kr-bottom">
           <div className="kr-bottom-accent" />
           <div className="kr-bottom-note">{notes[noteIndex]}</div>
-          {config.song ? (
+          {song ? (
             <>
-              <span className="kr-bottom-song">{config.song}</span>
-              {config.artist && <span className="kr-bottom-artist">- {config.artist}</span>}
+              <span className="kr-bottom-song">{song}</span>
+              {artist && <span className="kr-bottom-artist">- {artist}</span>}
             </>
           ) : (
             <span className="kr-bottom-empty">-</span>

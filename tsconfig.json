@@ -5,6 +5,7 @@
     "jsxImportSource": "react",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true
+    "erasableSyntaxOnly": true,
+    "types": ["@cloudflare/workers-types/2023-07-01"]
   }
 }

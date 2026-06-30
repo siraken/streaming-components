@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "streaming-components",
-  "main": "@astrojs/cloudflare/entrypoints/server",
+  "main": "src/entry.ts",
   "compatibility_date": "2026-06-24",
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
@@ -10,5 +10,13 @@
   },
   "preview_urls": false,
   "workers_dev": false,
-  "routes": [{ "pattern": "stc.siraken.net", "custom_domain": true }]
+  "routes": [{ "pattern": "stc.siraken.net", "custom_domain": true }],
+  "durable_objects": {
+    "bindings": [
+      { "name": "CHANNEL", "class_name": "Channel" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_classes": ["Channel"] }
+  ]
 }
