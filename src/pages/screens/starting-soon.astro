@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { StartingSoonScreen } from '../../components/screens/starting-soon';
+import '../../styles/globals.css';
+---
+
+<Screen title="Starting Soon">
+  <StartingSoonScreen client:only="react" />
+</Screen>

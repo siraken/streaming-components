@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { EndingScreen } from '../../components/screens/ending';
+import '../../styles/globals.css';
+---
+
+<Screen title="Stream Ending">
+  <EndingScreen client:only="react" />
+</Screen>

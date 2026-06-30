@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import { AlertBox } from '../../components/alert-box';
+import '../../styles/globals.css';
+---
+
+<Layout title="Alert Box">
+  <AlertBox client:only="react" />
+</Layout>

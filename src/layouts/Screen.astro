@@ -1,0 +1,35 @@
+---
+import { Font } from 'astro:assets';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=1920, height=1080, initial-scale=1.0" />
+    <Font cssVariable="--font-inter" />
+    <Font cssVariable="--font-jetbrains-mono" />
+    <Font cssVariable="--font-noto-sans-jp" />
+    <title>{title}</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { BrbScreen } from '../../components/screens/brb';
+import '../../styles/globals.css';
+---
+
+<Screen title="Be Right Back">
+  <BrbScreen client:only="react" />
+</Screen>

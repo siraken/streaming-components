@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { JustChattingScreen } from '../../components/screens/just-chatting';
+import '../../styles/globals.css';
+---
+
+<Screen title="Just Chatting">
+  <JustChattingScreen client:only="react" />
+</Screen>
