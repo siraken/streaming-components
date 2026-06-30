@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useOBSStudio } from '../hooks/use-obs-studio';
+import { formatTime } from '../lib/format';
 
 type Mode = 'starting' | 'brb' | 'ending';
 
@@ -18,12 +19,6 @@ const MODE_LABELS: Record<Mode, { heading: string; sub: string }> = {
   brb: { heading: 'BE RIGHT BACK', sub: "Stream will resume shortly" },
   ending: { heading: 'STREAM ENDING', sub: 'Thanks for watching' },
 };
-
-function formatTime(totalSeconds: number) {
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-}
 
 export const Countdown = () => {
   const [config] = useState(parseParams);

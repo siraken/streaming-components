@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { pad } from '../lib/format';
 
 function parseParams() {
   const params = new URLSearchParams(window.location.search);
@@ -12,8 +13,6 @@ function parseParams() {
     card: params.get('card') === 'true',
   };
 }
-
-const pad = (n: number) => String(n).padStart(2, '0');
 
 const WEEKDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
