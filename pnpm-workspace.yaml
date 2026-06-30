@@ -1,4 +1,7 @@
 minimumReleaseAge: 2880
+overrides:
+  es-module-lexer: 2.1.0
+  postcss: 8.5.15
 allowBuilds:
   "@parcel/watcher": true
   esbuild: true

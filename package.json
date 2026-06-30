@@ -9,7 +9,7 @@
     "build": "astro check && astro build",
     "lint": "biome check",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy --config dist/server/wrangler.json"
+    "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.0.1",
