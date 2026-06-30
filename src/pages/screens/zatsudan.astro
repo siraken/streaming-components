@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { ZatsudanScreen } from '../../components/screens/zatsudan';
+import '../../styles/globals.css';
+---
+
+<Screen title="Zatsudan">
+  <ZatsudanScreen client:only="react" />
+</Screen>

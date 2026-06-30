@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { GamingScreen } from '../../components/screens/gaming';
+import '../../styles/globals.css';
+---
+
+<Screen title="Gaming">
+  <GamingScreen client:only="react" />
+</Screen>

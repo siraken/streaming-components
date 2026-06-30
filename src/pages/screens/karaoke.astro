@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Screen from '../../layouts/Screen.astro';
+import { KaraokeScreen } from '../../components/screens/karaoke';
+import '../../styles/globals.css';
+---
+
+<Screen title="Karaoke">
+  <KaraokeScreen client:only="react" />
+</Screen>
