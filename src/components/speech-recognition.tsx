@@ -1,6 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { tv } from 'tailwind-variants';
-import { Chrome } from '@uiw/react-color';
 
 interface SpeechRecognitionResult {
   isFinal: boolean;
@@ -83,8 +82,6 @@ export const SpeechRecognition = () => {
   const [textWidth, setTextWidth] = useState(250);
   const [textColor, setTextColor] = useState('#ffffff');
   const [bgColor, setBgColor] = useState('#008000');
-  const [showTextColorPicker, setShowTextColorPicker] = useState(false);
-  const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [language, setLanguage] = useState('ja-JP');
   const [viewHeight, setViewHeight] = useState('');
   const [viewVisibility, setViewVisibility] = useState('visible');
@@ -290,84 +287,30 @@ export const SpeechRecognition = () => {
             />
           </div>
           <div className="mb-2">
-            <label htmlFor="text-color" className="inline-block min-w-[180px]">Text color:</label>
-            <div className="relative inline-block">
-              <button
-                id="text-color"
-                type="button"
-                onClick={() => setShowTextColorPicker(!showTextColorPicker)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setShowTextColorPicker(!showTextColorPicker);
-                  }
-                }}
-                className="min-w-[50px] min-h-[30px] border border-gray-300 rounded cursor-pointer"
-                style={{ backgroundColor: textColor }}
-                aria-label="テキストカラーピッカーを開く"
-              />
-              {showTextColorPicker && (
-                <div className="absolute z-10 mt-2">
-                  <div
-                    className="fixed inset-0"
-                    onClick={() => setShowTextColorPicker(false)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Escape') {
-                        setShowTextColorPicker(false);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label="カラーピッカーを閉じる"
-                  />
-                  <Chrome
-                    color={textColor}
-                    onChange={(color: { hex: string }) => setTextColor(color.hex)}
-                  />
-                </div>
-              )}
-            </div>
+            <label htmlFor="text-color" className="inline-block min-w-[180px]">
+              Text color:
+            </label>
+            <input
+              id="text-color"
+              type="color"
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+              className="min-w-[50px] min-h-[30px] align-middle cursor-pointer"
+              aria-label="テキストカラー"
+            />
           </div>
           <div className="mb-2">
             <label htmlFor="bg-color" className="inline-block min-w-[180px]">
               Background color:
             </label>
-            <div className="relative inline-block">
-              <button
-                id="bg-color"
-                type="button"
-                onClick={() => setShowBgColorPicker(!showBgColorPicker)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setShowBgColorPicker(!showBgColorPicker);
-                  }
-                }}
-                className="min-w-[50px] min-h-[30px] border border-gray-300 rounded cursor-pointer"
-                style={{ backgroundColor: bgColor }}
-                aria-label="背景カラーピッカーを開く"
-              />
-              {showBgColorPicker && (
-                <div className="absolute z-10 mt-2">
-                  <div
-                    className="fixed inset-0"
-                    onClick={() => setShowBgColorPicker(false)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Escape') {
-                        setShowBgColorPicker(false);
-                      }
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label="カラーピッカーを閉じる"
-                  />
-                  <Chrome
-                    color={bgColor}
-                    onChange={(color: { hex: string }) => setBgColor(color.hex)}
-                  />
-                </div>
-              )}
-            </div>
+            <input
+              id="bg-color"
+              type="color"
+              value={bgColor}
+              onChange={(e) => setBgColor(e.target.value)}
+              className="min-w-[50px] min-h-[30px] align-middle cursor-pointer"
+              aria-label="背景カラー"
+            />
           </div>
           <div className="mb-2">
             <label htmlFor="language" className="inline-block min-w-[180px]">
@@ -381,12 +324,12 @@ export const SpeechRecognition = () => {
             >
               <option value="id-ID">Bahasa Indonesia</option>
               <option value="en-US">English (US)</option>
-              <option value="es-ES">Español</option>
+              <option value="es-ES">Espa&#241;ol</option>
               <option value="de-DE">Deutsch</option>
               <option value="fil-PH">Filipino</option>
-              <option value="fr-FR">Français</option>
+              <option value="fr-FR">Fran&#231;ais</option>
               <option value="it-IT">Italiano</option>
-              <option value="nb-NO">Norsk bokmål</option>
+              <option value="nb-NO">Norsk bokm&#229;l</option>
               <option value="ru-RU">Pусский</option>
               <option value="uk-UA">Українська</option>
               <option value="ko-KR">한국어</option>

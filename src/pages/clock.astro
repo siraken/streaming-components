@@ -1,0 +1,11 @@
+---
+export const prerender = true;
+
+import Layout from '../layouts/Base.astro';
+import { Clock } from '../components/clock';
+import '../styles/globals.css';
+---
+
+<Layout title="Clock">
+  <Clock client:only="react" />
+</Layout>
