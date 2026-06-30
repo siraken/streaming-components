@@ -1,0 +1,190 @@
+---
+export const prerender = true;
+
+import Layout from '../../layouts/Base.astro';
+import '../../styles/globals.css';
+
+const icons: Record<string, string> = {
+  clock: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  counter: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="12" y1="6" x2="12" y2="14"/></svg>',
+  mic: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+  'lower-third': '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="14" width="20" height="7" rx="2"/><line x1="6" y1="17" x2="14" y2="17"/></svg>',
+  visualizer: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="8" y1="20" x2="8" y2="8"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="16" y1="20" x2="16" y2="10"/><line x1="20" y1="20" x2="20" y2="16"/></svg>',
+  particles: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="10" cy="18" r="2"/><circle cx="20" cy="18" r="1.5"/><line x1="7.5" y1="7.5" x2="9" y2="16.5"/><line x1="16.5" y1="9.5" x2="11" y2="16.5"/><line x1="18.5" y1="16.5" x2="11.5" y2="18"/></svg>',
+  countdown: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><polyline points="12 9 12 13 15 16"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="9" y1="2" x2="15" y2="2"/></svg>',
+  alert: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
+};
+
+const items = [
+  { name: 'Clock', url: '/overlays/clock/', description: '現在時刻をリアルタイム表示。タイムゾーン調整対応。', icon: 'clock', tag: 'Info' },
+  { name: 'Counter', url: '/overlays/counter/', description: '汎用カウンター。スコアや回数の表示に。', icon: 'counter', tag: 'Info' },
+  { name: 'Speech Recognition', url: '/overlays/speech-recognition/', description: 'Web Speech APIによるリアルタイム自動字幕。', icon: 'mic', tag: 'Info' },
+  { name: 'Lower Third', url: '/overlays/lower-third/', description: 'アニメーション付き名前・肩書きバナー。', icon: 'lower-third', tag: 'Effect' },
+  { name: 'Visualizer', url: '/overlays/visualizer/', description: 'オーディオスペクトラム風のアニメーション。', icon: 'visualizer', tag: 'Effect' },
+  { name: 'Particles', url: '/overlays/particles/', description: 'パーティクルネットワーク背景エフェクト。', icon: 'particles', tag: 'Effect' },
+  { name: 'Countdown', url: '/overlays/countdown/', description: '配信開始前・休憩・終了用カウントダウン。', icon: 'countdown', tag: 'Screen' },
+  { name: 'Alert Box', url: '/overlays/alert-box/?demo=true', description: '通知ポップアップ。フォロー・サブスク等。', icon: 'alert', tag: 'Effect' },
+];
+---
+
+<Layout title="Overlays — Streaming Components">
+  <div class="pg-root">
+    <header class="pg-header">
+      <a href="/" class="pg-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+      </a>
+      <div>
+        <h1 class="pg-title">Overlays</h1>
+        <p class="pg-sub">OBSブラウザソースとして個別に配置するオーバーレイ</p>
+      </div>
+    </header>
+
+    <main class="pg-main">
+      <div class="pg-grid">
+        {items.map((item) => (
+          <a href={item.url} class="pg-card">
+            <div class="pg-card-top">
+              <div class="pg-card-icon">
+                <Fragment set:html={icons[item.icon]} />
+              </div>
+              <span class="pg-card-tag">{item.tag}</span>
+            </div>
+            <h3 class="pg-card-name">{item.name}</h3>
+            <p class="pg-card-desc">{item.description}</p>
+          </a>
+        ))}
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .pg-root {
+    min-height: 100vh;
+    background-color: #1e1e2e;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(99, 102, 241, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
+    font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #cdd6f4;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pg-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 32px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .pg-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .pg-back:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .pg-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .pg-sub {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 2px;
+  }
+
+  .pg-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .pg-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .pg-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+
+  .pg-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .pg-card:hover .pg-card-icon {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+  }
+
+  .pg-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .pg-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.4);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .pg-card-tag {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.2);
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .pg-card-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 6px;
+  }
+
+  .pg-card-desc {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    line-height: 1.5;
+  }
+</style>

@@ -4,139 +4,23 @@ export const prerender = true;
 import Layout from '../layouts/Base.astro';
 import '../styles/globals.css';
 
-const icons: Record<string, string> = {
-  clock: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-  counter: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="12" y1="6" x2="12" y2="14"/></svg>',
-  mic: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
-  'lower-third': '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="14" width="20" height="7" rx="2"/><line x1="6" y1="17" x2="14" y2="17"/></svg>',
-  visualizer: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="14"/><line x1="8" y1="20" x2="8" y2="8"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="16" y1="20" x2="16" y2="10"/><line x1="20" y1="20" x2="20" y2="16"/></svg>',
-  particles: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="10" cy="18" r="2"/><circle cx="20" cy="18" r="1.5"/><line x1="7.5" y1="7.5" x2="9" y2="16.5"/><line x1="16.5" y1="9.5" x2="11" y2="16.5"/><line x1="18.5" y1="16.5" x2="11.5" y2="18"/></svg>',
-  countdown: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><polyline points="12 9 12 13 15 16"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="9" y1="2" x2="15" y2="2"/></svg>',
-  alert: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>',
-  screen: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-  chat: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
-  heart: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-  pause: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>',
-  gamepad: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/><line x1="15" y1="12" x2="15.01" y2="12"/><line x1="18" y1="10" x2="18.01" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.544-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
-  music: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
-  users: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
-};
-
-const overlays = [
+const sections = [
   {
-    name: 'Clock',
-    url: '/overlays/clock/',
-    description: '現在時刻をリアルタイム表示。タイムゾーン調整対応。',
-    icon: 'clock',
-    category: 'info',
+    name: 'Overlays',
+    url: '/overlays/',
+    description: 'OBSブラウザソースとして個別に配置するオーバーレイ。時計・字幕・カウンター・エフェクト等。',
+    count: 8,
+    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1" opacity="0.5"/></svg>',
+    accent: '#6366f1',
   },
   {
-    name: 'Counter',
-    url: '/overlays/counter/',
-    description: '汎用カウンター。スコアや回数の表示に。',
-    icon: 'counter',
-    category: 'info',
+    name: 'Screens',
+    url: '/screens/',
+    description: '1920×1080の配信画面レイアウト。待機画面・雑談・ゲーム・歌枠等。OBSでそのまま使用可能。',
+    count: 7,
+    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+    accent: '#8b5cf6',
   },
-  {
-    name: 'Speech Recognition',
-    url: '/overlays/speech-recognition/',
-    description: 'Web Speech APIによるリアルタイム自動字幕。',
-    icon: 'mic',
-    category: 'info',
-  },
-  {
-    name: 'Lower Third',
-    url: '/overlays/lower-third/',
-    description: 'アニメーション付き名前・肩書きバナー。',
-    icon: 'lower-third',
-    category: 'overlay',
-  },
-  {
-    name: 'Visualizer',
-    url: '/overlays/visualizer/',
-    description: 'オーディオスペクトラム風のアニメーション。',
-    icon: 'visualizer',
-    category: 'overlay',
-  },
-  {
-    name: 'Particles',
-    url: '/overlays/particles/',
-    description: 'パーティクルネットワーク背景エフェクト。',
-    icon: 'particles',
-    category: 'overlay',
-  },
-  {
-    name: 'Countdown',
-    url: '/overlays/countdown/',
-    description: '配信開始前・休憩・終了用カウントダウン。',
-    icon: 'countdown',
-    category: 'overlay',
-  },
-  {
-    name: 'Alert Box',
-    url: '/overlays/alert-box/?demo=true',
-    description: '通知ポップアップ。フォロー・サブスク等。',
-    icon: 'alert',
-    category: 'overlay',
-  },
-];
-
-const screens = [
-  {
-    name: 'Starting Soon',
-    url: '/screens/starting-soon/',
-    description: '配信開始前の待機画面。カウントダウン付き。',
-    icon: 'countdown',
-    category: 'screen',
-  },
-  {
-    name: 'Be Right Back',
-    url: '/screens/brb/',
-    description: '離席中・休憩画面。',
-    icon: 'pause',
-    category: 'screen',
-  },
-  {
-    name: 'Ending',
-    url: '/screens/ending/',
-    description: '配信終了画面。SNSリンク表示対応。',
-    icon: 'heart',
-    category: 'screen',
-  },
-  {
-    name: 'Just Chatting',
-    url: '/screens/just-chatting/',
-    description: '雑談配信用レイアウト。カメラ枠+情報バー。',
-    icon: 'chat',
-    category: 'screen',
-  },
-  {
-    name: 'Zatsudan',
-    url: '/screens/zatsudan/',
-    description: 'VTuber風雑談レイアウト。装飾フレーム+チャット+トピック。',
-    icon: 'users',
-    category: 'screen',
-  },
-  {
-    name: 'Gaming',
-    url: '/screens/gaming/',
-    description: 'ゲーム配信用。ゲーム画面+VTuberワイプ+情報バー。',
-    icon: 'gamepad',
-    category: 'screen',
-  },
-  {
-    name: 'Karaoke',
-    url: '/screens/karaoke/',
-    description: '歌枠用。曲名表示+ビジュアライザー+リクエスト欄。',
-    icon: 'music',
-    category: 'screen',
-  },
-];
-
-const categories = [
-  { key: 'info', label: 'Information', items: overlays },
-  { key: 'overlay', label: 'Overlays', items: overlays },
-  { key: 'screen', label: 'Screens (1920×1080)', items: screens },
 ];
 ---
 
@@ -144,42 +28,33 @@ const categories = [
   <div class="sc-root">
     <header class="sc-header">
       <div class="sc-logo">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10" />
           <polygon points="10 8 16 12 10 16 10 8" />
         </svg>
         <span>Streaming Components</span>
       </div>
+      <p class="sc-sub">OBS配信用オーバーレイ & スクリーンレイアウト</p>
     </header>
 
     <main class="sc-main">
-      {categories.map((cat) => {
-        const items = cat.items.filter((t) => t.category === cat.key);
-        if (items.length === 0) return null;
-        return (
-          <section class="sc-section">
-            <h2 class="sc-section-title">{cat.label}</h2>
-            <div class="sc-grid">
-              {items.map((tool) => (
-                <a href={tool.url} class="sc-card">
-                  <div class="sc-card-icon">
-                    <Fragment set:html={icons[tool.icon]} />
-                  </div>
-                  <div class="sc-card-body">
-                    <h3 class="sc-card-name">{tool.name}</h3>
-                    <p class="sc-card-desc">{tool.description}</p>
-                  </div>
-                  <div class="sc-card-arrow">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="9 18 15 12 9 6" />
-                    </svg>
-                  </div>
-                </a>
-              ))}
+      <div class="sc-grid">
+        {sections.map((sec) => (
+          <a href={sec.url} class="sc-card" style={`--accent: ${sec.accent}`}>
+            <div class="sc-card-icon">
+              <Fragment set:html={sec.icon} />
             </div>
-          </section>
-        );
-      })}
+            <h2 class="sc-card-name">{sec.name}</h2>
+            <p class="sc-card-desc">{sec.description}</p>
+            <div class="sc-card-footer">
+              <span class="sc-card-count">{sec.count} items</span>
+              <svg class="sc-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </div>
+          </a>
+        ))}
+      </div>
     </main>
   </div>
 </Layout>
@@ -197,17 +72,17 @@ const categories = [
   }
 
   .sc-header {
-    padding: 20px 32px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 40px 32px 0;
+    text-align: center;
   }
 
   .sc-logo {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
     letter-spacing: 0.01em;
   }
 
@@ -215,54 +90,46 @@ const categories = [
     color: #6366f1;
   }
 
+  .sc-sub {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 8px;
+  }
+
   .sc-main {
     max-width: 720px;
     margin: 0 auto;
-    padding: 32px 24px 64px;
-  }
-
-  .sc-section {
-    margin-bottom: 32px;
-  }
-
-  .sc-section-title {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.3);
-    margin-bottom: 10px;
-    padding-left: 4px;
+    padding: 48px 24px 64px;
   }
 
   .sc-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
   }
 
   .sc-card {
     display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
+    flex-direction: column;
+    padding: 32px;
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
     text-decoration: none;
     color: inherit;
-    transition:
-      background 0.2s ease,
-      border-color 0.2s ease,
-      box-shadow 0.2s ease;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
   }
 
   .sc-card:hover {
     background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(99, 102, 241, 0.25);
-    box-shadow:
-      0 0 0 1px rgba(99, 102, 241, 0.1),
-      0 4px 20px rgba(0, 0, 0, 0.2);
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 0 0 0 1px color-mix(in srgb, var(--accent) 15%, transparent);
+    transform: translateY(-2px);
+  }
+
+  .sc-card:hover .sc-card-icon {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
   }
 
   .sc-card:hover .sc-card-arrow {
@@ -270,52 +137,52 @@ const categories = [
     transform: translateX(0);
   }
 
-  .sc-card:hover .sc-card-icon {
-    background: rgba(99, 102, 241, 0.15);
-    color: #818cf8;
-  }
-
   .sc-card-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
     background: rgba(255, 255, 255, 0.04);
-    color: rgba(255, 255, 255, 0.45);
-    flex-shrink: 0;
-    transition:
-      background 0.2s ease,
-      color 0.2s ease;
-  }
-
-  .sc-card-body {
-    flex: 1;
-    min-width: 0;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 20px;
+    transition: background 0.2s, color 0.2s;
   }
 
   .sc-card-name {
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: rgba(255, 255, 255, 0.9);
-    line-height: 1.3;
+    margin-bottom: 8px;
   }
 
   .sc-card-desc {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.35);
-    margin-top: 1px;
-    line-height: 1.4;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .sc-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .sc-card-count {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.25);
   }
 
   .sc-card-arrow {
     color: rgba(255, 255, 255, 0.25);
     opacity: 0;
     transform: translateX(-4px);
-    transition:
-      opacity 0.2s ease,
-      transform 0.2s ease;
-    flex-shrink: 0;
+    transition: opacity 0.2s, transform 0.2s;
   }
 </style>
